@@ -1,0 +1,68 @@
+_____________________________________________________________________________
+  Jean-Francois Monin                                 tel +33 2 96 05 26 79
+  FT. CNET, Technopole Anticipa, DTL/MSV,             fax +33 2 96 05 39 45
+  2 avenue Pierre Marzin, 22307 LANNION, France
+  e-mail : monin@lannion.cnet.fr
+_____________________________________________________________________________
+
+This is a very short addendum to previous cps developments
+presented in sibling directories.
+
+The difference is in the definition of the "monad" of 
+continuations : 
+
+    Definition Mx := 
+	[C:Prop][A:Set]
+	  (X:Set)(P:Prop)(e:P->X) (C->P)->(A->X)->X.
+
+(in Mx_defs) instead of :
+
+    Section defcont.
+
+    Variable X:Set.
+    Variable P:Prop.
+    Variable e:P->X.
+
+
+    Definition Nxglob := [C:Prop][A:Set](C->P)->(A->X)->X.
+    ...
+    End defcont.
+
+(in cps_Nx.v).
+
+Hence an object of type (Mx C A) is now really polymorphic,
+and this feature is used in the algorithm developed in copy.v,
+which manages to produce a tree similar to a given tree
+(blue nodes become red) with maximum structure sharing.
+The caml equivalent uses recursively the "try... with..."
+construct.
+Further explanations are given in my paper 
+in SCP (juny 1996).
+
+Extraction generates an ocaml program which is not
+typable : we have to insert Obj.magic at some point
+(see copy_extr_corr.ml). The type mx must also be 
+deleted from this file.
+
+-- Changes (february 1997).
+Another algorithm with recursive uses of try... with
+has been added : encoding of Huffman compression.
+See huffman.v and huff_extr_corr.ml.
+
+-- Changes (july 2001).
+Close examination of copy.v shows that Mx could be used
+in a predicative way in that case, just because the two
+alternatives try... with... in core_cop call Mx_unit:
+Mx_unit can then be called before Mx_try, hence X happens
+to be the same as before, see copy_cheat.v.
+In fact Mx_unit stops the propagation of exceptions
+We consider this is cheating, because Mx_unit stops the propagation 
+of exceptions, which is not acceptable in the general case.
+Indeed, this trick cannot be used in huffman.v.
+
+Extraction in V7.0 is much better : in V6.3, the "exceptional"
+continuation was an atomic value, and was then evaluated even if not
+used. For instance, in huffman, all the tree was traversed even if the
+result was on the leftmost branch. In V7.0, this bad behavior is
+no more possible because we get a true continuation for exceptions
+(its argument has type prop).

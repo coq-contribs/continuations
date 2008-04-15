@@ -1,0 +1,49 @@
+_____________________________________________________________________________
+  Jean-Francois Monin                                 tel +33 2 96 05 26 79
+  FT. CNET, Technopole Anticipa, DTL/MSV,             fax +33 2 96 05 39 45
+  2 avenue Pierre Marzin, 22307 LANNION, France
+  e-mail : monin@lannion.cnet.fr
+_____________________________________________________________________________
+
+We show here a way of developing correct functionnal
+programs raising exceptions. 
+This is made possible using a Continuation Passing Style translation,
+see the work of P. Casteran in CONTRIB/Bordeaux/EXCEPTIONS.
+Things are made easier and more modular using some general definitions
+as explained in mpc.dvi. 
+NB: The present version of this paper is related to a V5.8.3
+version of the development. The user-syntax facilities offered
+in V5.10 allow us to go further. For instance, in order to raise
+an exception xv2 with value true we use 
+"NmxRaise (xv2 true)" instead of "Apply Nmx_raise with x:=(xv2 true)".
+
+The basic tools we use are defined in the directory cps.
+Three independent modules are available, namely cps_N, cps_Nx and cps_Nmx.
+   - cps_N.v defines a "basic" CPS translation
+     (atomic type A is translated into (X:Set)(A->X)->X.)
+     A catch/throw mechanism is provided instead of raise/handle
+   - cps_Nx.v defines a CPS translation enriched with simple exceptions
+     (just one exception, no value).
+   - cps_Nmx.v defines a CPS translation enriched with multiple exceptions.
+
+The use of these modules is illustrated respectively in
+weight/Naccu_cc.v, weight/Nxaccu_ex.v and weight/Nmxaccu_ex.v
+
+As an application FOUnify_cps contains a variant 
+of the development of first order unification (by J.Rouyer)
+given in CONTRIB/Nancy/FOUnify.
+Only the second half of term_unif.v has to be adapted,
+i.e. one replace the inductive definition of Unification by
+   [t1,t2:quasiterm] (Unification_f t1 t2) V+ (Unification_s t1 t2)
+---where V+ is a kind of sum, see cps_Nx---
+and one introduces the elimination function associated to
+this new definition.
+Then we get an algorithm where failure detection results in raising
+an exception.
+
+----------------------------------------
+Addendum, jan 29 1996
+
+A truly polymorphic version of cps translation
+has been added in directory polycont.
+See polycont/README

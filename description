@@ -1,0 +1,10 @@
+Name: Continuations
+Title: A toolkit to reason with programs raising exceptions
+Author: Jean-François Monin
+Institution: CNET, Lannion
+Description: We show a way of developing correct functionnal programs
+raising exceptions.  This is made possible using a Continuation
+Passing Style translation, see the contribution "exceptions" from
+P. Casteran at Bordeaux. Things are made easier and more modular using
+some general definitions.
+Keywords: exception, monad, continuation, cps
