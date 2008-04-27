@@ -26,7 +26,7 @@ let nb_hyps c = List.length (fst (decompose_prod c))
 (* pour un Apply f with typeres_of c *)
 let resolve_with_tac chd mlist gls =
   let ty = pf_type_of gls chd in
-  let clause = make_clenv_binding_apply gls (Some (nb_hyps ty)) (chd, ty)
+  let clause = make_clenv_binding_apply true (Some (nb_hyps ty)) gls (chd, ty)
     (Rawterm.ImplicitBindings mlist) in
   res_pf clause gls
 
