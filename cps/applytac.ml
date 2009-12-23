@@ -32,7 +32,7 @@ let resolve_with_tac chd mlist gls =
 
 (* f = com a appliquer; c = com dont on veut le type du resultat *)
 let resolve_with_compon translate cpn f c gls =
-   let mlist = [Evd.empty,cpn gls (translate gls c)]
+   let mlist = [cpn gls (translate gls c)]
    in resolve_with_tac (translate gls f) mlist gls
 
 let fst_arg_of_restype gls c = first_arg(last_constr (pf_type_of gls c))
