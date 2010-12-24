@@ -27,7 +27,7 @@ let nb_hyps c = List.length (fst (decompose_prod c))
 let resolve_with_tac chd mlist gls =
   let ty = pf_type_of gls chd in
   let clause = make_clenv_binding_apply gls (Some (nb_hyps ty)) (chd, ty)
-    (Rawterm.ImplicitBindings mlist) in
+    (Glob_term.ImplicitBindings mlist) in
   res_pf clause gls
 
 (* f = com a appliquer; c = com dont on veut le type du resultat *)
