@@ -80,7 +80,7 @@ intro t; case t; clear t.
       intros l2; apply Mx_unit; case l2; intros l Hl; exists (R :: l);
        auto with huffman.
       intro elsewhere_t2; simpl in |- *; auto. 
-Qed.
+Defined.
 
 Theorem encode :
  forall t : tree, (exists l : ld, path l t) -> {l : ld | path l t}.
@@ -89,7 +89,7 @@ apply Mx_try with (1 := lookup t).
   intro x; exact x.
   intro et; exists (nil (A:=direction)). 
     case Ht; intros l p. case (not_elsewhere t l); assumption. 
-Qed.
+Defined.
 
 End sec_dom.
 

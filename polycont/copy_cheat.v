@@ -47,14 +47,14 @@ intro t; case t; clear t.
     apply Mx_bind with (1 := core_cop t1).
       intros (t', eg, di); apply Mx_unit. exists (Nd1 yellow t'); [ elim eg; trivial | simplify_eq; assumption ].
       intro eg; simpl in |- *; elim eg; trivial.
-Qed.
+Defined.
 
 
 Theorem eff_cop : forall t : tree1, {t' : tree1 | t' = def_cop t}.
 intro t; apply Mx_try with (1 := core_cop t).
     intros (x, e, n); exists x; auto.
     intro eg; exists t; trivial.
-Qed.
+Defined.
 
 (* Extracting terms typed in system F but not in ML *)
 (* In the extracted ML program, you have to
