@@ -1,7 +1,6 @@
+-arg -impredicative-set
 -R . Continuations
--impredicative-set
--byte
-./cps/applytac.ml
+./cps/applytac.ml4
 ./cps/cps_Nmx.v
 ./cps/cps_N.v
 ./cps/cps_Nx.v
