@@ -43,5 +43,5 @@ let applyWithFATR_tac f c =
   resolve_with_compon (fun _ x -> x) fst_arg_of_restype f c
 
 TACTIC EXTEND apply_with_fatr
-  [ "apply_with_fatr" constr(f) constr(c) ] -> [ applyWithFATR_tac f c ]
+  [ "apply_with_fatr" constr(f) constr(c) ] -> [ Proofview.V82.tactic (applyWithFATR_tac f c) ]
 END
