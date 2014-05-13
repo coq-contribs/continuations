@@ -12,6 +12,8 @@ open Clenv
 open Clenvtac
 open Tacmach
 
+DECLARE PLUGIN "cps/applytac"
+
 let last_constr c = snd (decompose_prod c)
 
 let first_arg =
