@@ -30,7 +30,7 @@ let resolve_with_tac chd mlist gls =
   let ty = pf_type_of gls chd in
   let clause = pf_apply make_clenv_binding_apply gls (Some (nb_hyps ty)) (chd, ty)
     (Misctypes.ImplicitBindings mlist) in
-  res_pf clause gls
+  Proofview.V82.of_tactic (res_pf clause) gls
 
 (* f = com a appliquer; c = com dont on veut le type du resultat *)
 let resolve_with_compon translate cpn f c gls =
