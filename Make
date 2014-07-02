@@ -1,4 +1,5 @@
 -arg -impredicative-set
+-I cps
 -R . Continuations
 ./cps/applytac.ml4
 ./cps/cps_Nmx.v
