@@ -27,7 +27,7 @@ let nb_hyps c = List.length (fst (decompose_prod c))
 
 (* pour un Apply f with typeres_of c *)
 let resolve_with_tac chd mlist gls =
-  let ty = pf_type_of gls chd in
+  let ty = pf_unsafe_type_of gls chd in
   let clause = pf_apply make_clenv_binding_apply gls (Some (nb_hyps ty)) (chd, ty)
     (Misctypes.ImplicitBindings mlist) in
   Proofview.V82.of_tactic (res_pf clause) gls
@@ -37,7 +37,7 @@ let resolve_with_compon translate cpn f c gls =
    let mlist = [cpn gls (translate gls c)]
    in resolve_with_tac (translate gls f) mlist gls
 
-let fst_arg_of_restype gls c = first_arg(last_constr (pf_type_of gls c))
+let fst_arg_of_restype gls c = first_arg(last_constr (pf_unsafe_type_of gls c))
 
 (* FATR = first argument of type of result of *)
 
