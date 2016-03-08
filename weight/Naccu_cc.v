@@ -23,7 +23,7 @@ Ltac Split_condsum c1 c2 c3 := intros s; elim s; clear s; intros c1 c2 c3.
 
 Theorem ex_deb_cc_V1 : forall (m : nat) (t : tree), N (RESU m t).
 intros m t.
-Ncallcc ipattern:c.
+Ncallcc ipattern:(c).
 Napply (condsum_accu m 0 t).
   intro s_cond; elim s_cond; intros n Hnt Hmn.
   Nunit; refine (exres _ _ false _); auto with v62.
@@ -50,10 +50,10 @@ Napply (condsum_accu m 0 t).
       Hint Resolve deb_left_accu_plus deb_right_accu_plus deb_accu_plus_r.
        intros t1 R1 t2 R2 a e.
        Napply (condsum_accu m a t1);
-        [ Split_condsum ipattern:an1 ipattern:Han1t1 ipattern:Hman1
+        [ Split_condsum ipattern:(an1) ipattern:(Han1t1) ipattern:(Hman1)
         | apply R1; auto with v62 ].
        Napply (condsum_accu m an1 t2);
-        [ Split_condsum ipattern:an ipattern:Hant2 ipattern:Hmn
+        [ Split_condsum ipattern:(an) ipattern:(Hant2) ipattern:(Hmn)
         | apply R2; rewrite Han1t1; auto with v62 ].
        Nunit; refine (condsum_accu_intro _ _ _ an _ _); auto with v62.
        rewrite Hant2; rewrite Han1t1; rewrite plus_assoc_reverse;

@@ -46,10 +46,10 @@ cut (forall n : nat, m <= n \/+ T_aux m n).
      Hint Resolve deb_left_accu_plus deb_right_accu_plus deb_accu_plus_r.
      intros t1 R1 t2 R2 a.
      NxElim (R1 a);
-      [ Split_condsum ipattern:an1 ipattern:Han1t1 ipattern:Hman1
+      [ Split_condsum ipattern:(an1) ipattern:(Han1t1) ipattern:(Hman1)
       | auto with v62 ].
      NxElim (R2 an1);
-      [ Split_condsum ipattern:an ipattern:Hant2 ipattern:Hmn
+      [ Split_condsum ipattern:(an) ipattern:(Hant2) ipattern:(Hmn)
       | rewrite Han1t1; auto with v62 ].
      NxUnit; refine (condsum_accu_intro _ _ _ an _ _); auto with v62.
      rewrite Hant2; rewrite Han1t1; rewrite plus_assoc_reverse; simpl in |- *;

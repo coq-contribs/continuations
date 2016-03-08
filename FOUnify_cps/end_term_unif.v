@@ -165,7 +165,7 @@ Hint Resolve Fail_hd1 Fail_hd2 Fail_hd3 Fail_hd4 Fail_hd5 Fail_hd6
 (*****************************************************************)
 
 Goal forall t1 t2 : quasiterm, Unification t1 t2 -> Unification t2 t1.
-intros; Elimunif ipattern:H;
+intros; Elimunif ipattern:(H);
  unfold idempotent, over, under, min_unif, unif in |- *; 
  intros.
 apply Unif_succeed with f;
