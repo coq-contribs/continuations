@@ -44,8 +44,7 @@ Definition condsum2_accu_handle (m : nat) (t : tree)
 
 Definition T_aux (m n : nat) := {n' : nat | n = n' &  ~ m <= n'}.
 
-Ltac Split_condsum c1 c2 c3 := intro s; elim s; clear s; intros c1 c2 c3.
-
+Ltac Split_condsum c1 c2 c3 := let s := fresh "s" in intro s; elim s; clear s; intros c1 c2 c3.
 Theorem core_V2 : forall (m : nat) (t : tree), condsum2_accu_cps m 0 t.
 
 do 2 intro.

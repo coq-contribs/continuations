@@ -25,6 +25,7 @@ Inductive Txval : Txlev -> Set :=
   | xv2 : bool -> Txval xl2.
 
 Ltac AutoTx :=
+  let l := fresh "l" in
   intro l; elim l; simpl in |- *; intros v Hv; elim Hv; auto with v62.
 
 Section inverse_of_xv2.
