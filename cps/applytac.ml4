@@ -5,7 +5,7 @@
 (* January 1995, Coq V5.10                                        *)
 (* ============================================================== *)
 
-open Errors
+open CErrors
 open Term
 open Proof_type
 open Clenv
