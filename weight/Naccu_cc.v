@@ -26,8 +26,8 @@ intros m t.
 Ncallcc ipattern:(c).
 Napply (condsum_accu m 0 t).
   intro s_cond; elim s_cond; intros n Hnt Hmn.
-  Nunit; refine (exres _ _ false _); auto with v62.
-  apply Sf; generalize Hmn; rewrite Hnt; auto with v62.
+  Nunit; refine (exres _ _ false _); auto.
+  apply Sf; generalize Hmn; rewrite Hnt; auto.
 
   cut (forall n : nat, (m <= n -> P_overweight_accu m 0 t) -> N (T_aux m n)).
     intro g.
@@ -44,29 +44,29 @@ Napply (condsum_accu m 0 t).
        Napplift (g (a + n));
         [ intro sn;
            refine (let (b, _, _) := sn in condsum_accu_intro _ _ _ b _ _);
-           auto with v62
-        | auto with v62 ].
+           auto
+        | auto ].
 
       Hint Resolve deb_left_accu_plus deb_right_accu_plus deb_accu_plus_r.
        intros t1 R1 t2 R2 a e.
        Napply (condsum_accu m a t1);
         [ Split_condsum ipattern:(an1) ipattern:(Han1t1) ipattern:(Hman1)
-        | apply R1; auto with v62 ].
+        | apply R1; auto ].
        Napply (condsum_accu m an1 t2);
         [ Split_condsum ipattern:(an) ipattern:(Hant2) ipattern:(Hmn)
-        | apply R2; rewrite Han1t1; auto with v62 ].
-       Nunit; refine (condsum_accu_intro _ _ _ an _ _); auto with v62.
+        | apply R2; rewrite Han1t1; auto ].
+       Nunit; refine (condsum_accu_intro _ _ _ an _ _); auto.
        rewrite Hant2; rewrite Han1t1; rewrite plus_assoc_reverse;
-        auto with v62.
+        auto.
 
      (* definition de g *)
 
      intros n e.
      case (le_dec m n).
-       intro le_mn; Nthrow c; Nunit; refine (exres _ _ true _); auto with v62.
-          apply St; cut (P_overweight_accu m 0 t); auto with v62.
+       intro le_mn; Nthrow c; Nunit; refine (exres _ _ true _); auto.
+          apply St; cut (P_overweight_accu m 0 t); auto.
 
-       intro Nle_mn; Nunit; refine (exist2 _ _ n _ _); auto with v62.
+       intro Nle_mn; Nunit; refine (exist2 _ _ n _ _); auto.
 Qed.
 
 End algocc.

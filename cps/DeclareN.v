@@ -26,7 +26,7 @@
 
 Ltac Nunit := apply N_unit.
 
-Ltac NunitRefine c := apply N_unit; refine c; auto with v62.
+Ltac NunitRefine c := apply N_unit; refine c; auto.
 
 Ltac Nabst := apply N_abstr.
 

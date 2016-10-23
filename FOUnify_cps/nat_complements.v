@@ -45,12 +45,12 @@ Definition P_S (A : Set) (P : A -> Prop) (x : A) : Set :=
   {a : A | a = x &  P a}.
 
 Lemma P_S_proof1 : forall (A : Set) (a : A) (P : A -> Prop), P a -> P_S A P a.
-intros; unfold P_S in |- *; exists a; auto with v62.
+intros; unfold P_S in |- *; exists a; auto with arith.
 Qed.
 
 Lemma P_S_proof2 : forall (A : Set) (a : A) (P : A -> Prop), P_S A P a -> P a.
 unfold P_S in |- *; intros A a P h; elim h; intros x h0; elim h0;
- auto with v62.
+ auto with arith.
 Qed.
 
 (*********************************************************************)
@@ -59,13 +59,13 @@ Qed.
 
 Lemma Diff :
  forall (A : Set) (f : A -> Prop) (a b : A), f a -> ~ f b -> a <> b.
-unfold not in |- *; intros A f a b H H0 H1; elim H0; elim H1; auto with v62.
+unfold not in |- *; intros A f a b H H0 H1; elim H0; elim H1; auto with arith.
 Qed.
 
-(*** Replace "apply h;auto with v62" by "auto" when the Type of h is False : ***)
+(*** Replace "apply h;auto with arith" by "auto" when the Type of h is False : ***)
 
 Lemma n_False : ~ False.
-auto with v62.
+auto with arith.
 Qed.
 
 (*********************************************************************)
@@ -83,7 +83,7 @@ Qed.
 Lemma nat_eq_decS : forall x y : nat, {x = y} + {x <> y}.
 simple induction x.           
 (*case x=O*)
-simple induction y; auto with v62.
+simple induction y; auto with arith.
 (*case x=(S y)*)
 simple induction y.
 (*... case y0=O*)
@@ -91,13 +91,13 @@ right; discriminate.
 (*... case y0=(S y1)*)
 intros y1 h; elim (H y1); intros.
 (*... ... case y=y1*)
-auto with v62. (*apply eq_S*)
+auto with arith. (*apply eq_S*)
 (*case not y=y1*)
-right; simplify_eq; auto with v62.
+right; simplify_eq; auto with arith.
 Qed.
 
 Lemma nat_eq_decP : forall x y : nat, x = y \/ x <> y.
-intros x y; elim (nat_eq_decS x y); auto with v62.
+intros x y; elim (nat_eq_decS x y); auto with arith.
 Qed.
 
 (*********************************************************************)
@@ -108,22 +108,22 @@ Lemma ind_leS :
  forall (n : nat) (P : nat -> Set),
  P 0 -> (forall p : nat, (forall q : nat, q <= p -> P q) -> P (S p)) -> P n.
 intros n P; cut ((forall m : nat, m <= n -> P m) -> P n).
-2: auto with v62. (*apply le_n*)
+2: auto with arith. (*apply le_n*)
 intros h h0 h1; apply h.
 elim n.
 (*case n=O*)
 (*... case m=O*)
 simple induction m.
-intros; auto with v62.
+intros; auto with arith.
 (*... case m=(S y)*)    
-intros y Hyp1 Hyp2; absurd (S y <= 0); auto with v62. (*le_Sn_O*)
+intros y Hyp1 Hyp2; absurd (S y <= 0); auto with arith. (*le_Sn_O*)
 (*case n=(S y)*)
 simple induction m.
 (*... case m=O*)
-auto with v62.
+auto with arith.
 (*... case m=(S y0)*)    
 intros y0 hyp1 hyp2; apply (h1 y0).
-eauto with v62.
+eauto with arith.
 Qed.
 
 Lemma ind_leP :
@@ -132,8 +132,8 @@ Lemma ind_leP :
 intros; apply (P_S_proof2 nat n P).
 apply (ind_leS n (P_S nat P));
  [ apply P_S_proof1; assumption | intros; apply P_S_proof1 ].
-apply H0; intros; elim (H1 q); [ intros x eg_x_q | auto with v62 ].
-rewrite eg_x_q; auto with v62.
+apply H0; intros; elim (H1 q); [ intros x eg_x_q | auto with arith ].
+rewrite eg_x_q; auto with arith.
 Qed.
 
 (*********************************************************************)
@@ -141,12 +141,12 @@ Qed.
 (*********************************************************************)
 
 Lemma pred_or : forall m : nat, 0 = m \/ m = S (pred m).
-intro; elim m; auto with v62.
+intro; elim m; auto with arith.
 Qed.
 
 Lemma nat_caseS :
  forall (x : nat) (P : nat -> Set), P 0 -> (forall n : nat, P (S n)) -> P x.
-intros; elim x; auto with v62.
+intros; elim x; auto with arith.
 Qed.
 
 (*********************************************************************)
@@ -156,28 +156,28 @@ Qed.
 Lemma le_decS : forall n p : nat, {n <= p} + {~ n <= p}.
 simple induction n.
 (*case n=O*)
-auto with v62.
+auto with arith.
 (*case n=(S y)*)
 simple induction p.
-auto with v62.           (*apply le_Sn_O*)
+auto with arith.           (*apply le_Sn_O*)
 intros y0 le_or_not_le; elim (H y0).
-auto with v62.             (*apply le_n_S*)
+auto with arith.             (*apply le_n_S*)
 intro not_le_n0_y0; right; unfold not in |- *.
-intros; elim not_le_n0_y0; auto with v62.        (*apply le_S_n*)
+intros; elim not_le_n0_y0; auto with arith.        (*apply le_S_n*)
 Qed.
 
 Lemma le_decP : forall n p : nat, n <= p \/ ~ n <= p.
-intros; elim (le_decS n p); auto with v62.
+intros; elim (le_decS n p); auto with arith.
 Qed.
 
 Lemma le_S_eqS : forall n p : nat, n <= p -> {S n <= p} + {n = p :>nat}.
 simple induction n.
-simple induction p; auto with v62.
+simple induction p; auto with arith.
 intros n0 H p; elim p.
-intros; absurd (S n0 <= 0); auto with v62.
-intros n1 H1 H2; elim (H n1); auto with v62. (*le_n_S*)
+intros; absurd (S n0 <= 0); auto with arith.
+intros n1 H1 H2; elim (H n1); auto with arith. (*le_n_S*)
 Qed.
 
 Lemma le_S_eqP : forall n p : nat, n <= p -> S n <= p \/ n = p :>nat.
-intros; elim (le_S_eqS n p); auto with v62.
+intros; elim (le_S_eqS n p); auto with arith.
 Qed.

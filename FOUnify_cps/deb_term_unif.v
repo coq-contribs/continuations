@@ -57,9 +57,9 @@ Fixpoint DIFFELNB (l : listv) : nat -> Prop :=
 
 Lemma diffelnb_DIFFELNB :
  forall (l : listv) (n : nat), diffelnb l n -> DIFFELNB l n.
-intros; elim H; simpl in |- *; auto with v62.
-intros l0 n0; elim n0; simpl in |- *; auto with v62.
-elim l0; simpl in |- *; auto with v62.
+intros; elim H; simpl in |- *; auto with arith.
+intros l0 n0; elim n0; simpl in |- *; auto with arith.
+elim l0; simpl in |- *; auto with arith.
 Qed.
 
 Lemma DIFFELNB_diffelnb :
@@ -71,8 +71,8 @@ discriminate H0.
 simple induction n; intros.
 elim H0.                            (*(DIFFELNB (Consv v y) O):False*)
 elim H1; intros h; elim h; intros.
-apply diffelnb_Consv_in; auto with v62.
-apply diffelnb_Consv_n_in; auto with v62.
+apply diffelnb_Consv_in; auto with arith.
+apply diffelnb_Consv_n_in; auto with arith.
 Qed.
 
 (***********************************************************************)
@@ -81,16 +81,16 @@ Qed.
 
 Lemma DIFFELNBor : forall l : listv, {count : nat | DIFFELNB l count}.
 simple induction l.
-exists 0; simpl in |- *; auto with v62.  (*case l=Nilv*)
+exists 0; simpl in |- *; auto with arith.  (*case l=Nilv*)
 intros v y H.               (*case l=(Consv v y)*)
 elim H; intros.
 elim (IS_IN_LV_decS v y); intros.
 exists x.             (*case v in y:(IS_IN_LV v y)*)
-cut (DIFFELNB y x); auto with v62.
-elim x; simpl in |- *; auto with v62.    (*case x=(S p)*)
-cut (IS_IN_LV v y); auto with v62. (*case x=O*)
-elim y; simpl in |- *; auto with v62.    (*case v not in y:~(IS_IN_LV v y)*)
-exists (S x); simpl in |- *; auto with v62.
+cut (DIFFELNB y x); auto with arith.
+elim x; simpl in |- *; auto with arith.    (*case x=(S p)*)
+cut (IS_IN_LV v y); auto with arith. (*case x=O*)
+elim y; simpl in |- *; auto with arith.    (*case v not in y:~(IS_IN_LV v y)*)
+exists (S x); simpl in |- *; auto with arith.
 Qed.
 
 (***********************************************************************)
@@ -98,8 +98,8 @@ Qed.
 (***********************************************************************)
 
 Lemma DIFFELNB_O : forall l : listv, DIFFELNB l 0 -> Nilv = l :>listv.
-simple induction l; simpl in |- *; auto with v62.
-intros; absurd False; auto with v62.
+simple induction l; simpl in |- *; auto with arith.
+intros; absurd False; auto with arith.
 Qed.
 
 Lemma DIFFELNB_Consv_n_O :
@@ -126,7 +126,7 @@ Inductive st_inclv (l1 l2 : listv) : Prop :=
       (forall y : var, IS_IN_LV y l1 -> IS_IN_LV y l2) -> st_inclv l1 l2.
 
 Lemma n_st_inclv_l_Nilv : forall l : listv, ~ st_inclv l Nilv.
-intros l; unfold not in |- *; intros h; elim h; auto with v62.
+intros l; unfold not in |- *; intros h; elim h; auto with arith.
 Qed.
 
 (*******************************************************************)
@@ -162,7 +162,7 @@ Fixpoint REMOVE (x : var) (l : listv) {struct l} :
 
 Lemma remove_REMOVE :
  forall (l l0 : listv) (x : var), remove x l l0 -> REMOVE x l l0.
-intros; elim H; intros; simpl in |- *; auto with v62.
+intros; elim H; intros; simpl in |- *; auto with arith.
 Qed.
 
 Lemma REMOVE_remove :
@@ -172,13 +172,13 @@ intros; elim H; apply remove_init.
 simple induction l1.
 simpl in |- *; intros.
 elim H0; intros h1; elim h1; intros.
-elim H1; apply remove_eq; auto with v62.
-absurd False; auto with v62.
+elim H1; apply remove_eq; auto with arith.
+absurd False; auto with arith.
 intros.
 elim H1; intros.
-elim H2; intros h h0; elim h; apply remove_eq; auto with v62.
+elim H2; intros h h0; elim h; apply remove_eq; auto with arith.
 elim H2; intros h h0; elim h0; intros h1 h2; elim h1; apply remove_n_eq;
- auto with v62.
+ auto with arith.
 Qed.
 
 (*******************************************************************)
@@ -189,11 +189,11 @@ Lemma REMOVE_n_IS_IN_LV_eq :
  forall (l l0 : listv) (x : var),
  REMOVE x l l0 -> ~ IS_IN_LV x l -> l = l0 :>listv.
 intros l l0 x h; cut (remove x l l0).
-2: apply REMOVE_remove; auto with v62.
-intros h0; elim h0; auto with v62.
-intros; elim H1; simpl in |- *; auto with v62.
+2: apply REMOVE_remove; auto with arith.
+intros h0; elim h0; auto with arith.
+intros; elim H1; simpl in |- *; auto with arith.
 simpl in |- *; intros.
-elim H0; auto with v62; unfold not in |- *; intros; elim H2; auto with v62.
+elim H0; auto with arith; unfold not in |- *; intros; elim H2; auto with arith.
 Qed.
 
 
@@ -204,17 +204,17 @@ Qed.
 Lemma REMOVE_Consv_eq :
  forall (l l0 : listv) (x : var), REMOVE x (Consv x l) l0 -> REMOVE x l l0.
 intros until x; simpl in |- *; intros.
-elim H; intros h; elim h; intros; auto with v62.
-absurd (x = x :>var); auto with v62.
+elim H; intros h; elim h; intros; auto with arith.
+absurd (x = x :>var); auto with arith.
 Qed.
 
 Lemma REMOVE_Consv_n_eq :
  forall (l l0 : listv) (x x0 : var),
  REMOVE x (Consv x0 l) (Consv x0 l0) -> x0 <> x :>var -> REMOVE x l l0.
-intros l l0 x x0; simpl in |- *; intros; auto with v62.
+intros l l0 x x0; simpl in |- *; intros; auto with arith.
 elim H; intros h; elim h; intros.
-absurd (x0 = x :>var); auto with v62.
-elim H2; auto with v62.
+absurd (x0 = x :>var); auto with arith.
+elim H2; auto with arith.
 Qed.
 
 (*******************************************************************)
@@ -223,7 +223,7 @@ Qed.
 
 Lemma sig_REMOVE : forall (l : listv) (x : var), {l0 : listv | REMOVE x l l0}.
 simple induction l; intros.
-exists Nilv; simpl in |- *; auto with v62.
+exists Nilv; simpl in |- *; auto with arith.
 elim (H x); intros l1 h.
 elim (var_eq_decS x v); intros h0.
 elim h0; exists l1; simpl in |- *.
@@ -234,7 +234,7 @@ Qed.
 
 Lemma exi_REMOVE :
  forall (l : listv) (x : var), exists l0 : listv, REMOVE x l l0.
-intros; elim (sig_REMOVE l x); intros l0 h; exists l0; auto with v62.
+intros; elim (sig_REMOVE l x); intros l0 h; exists l0; auto with arith.
 Qed.
 
 (*******************************************************************)
@@ -246,9 +246,9 @@ Lemma Headv_REMOVE_Consv_Nilv :
  REMOVE x (Consv x0 l) l0 -> x <> x0 :>var -> Nilv <> l0 :>listv.
 simple induction l0; intros.
 elim H; intros h; elim h; intros.
-absurd (x = x0 :>var); auto with v62.
-absurd False; auto with v62.
-apply Diff with BNilv; auto with v62; simpl in |- *; auto with v62.
+absurd (x = x0 :>var); auto with arith.
+absurd False; auto with arith.
+apply Diff with BNilv; auto with arith; simpl in |- *; auto with arith.
 Qed.
 
 Lemma REMOVE_Consv_n_eq_Headv :
@@ -256,18 +256,18 @@ Lemma REMOVE_Consv_n_eq_Headv :
  REMOVE x (Consv x0 l) l0 ->
  x <> x0 :>var -> Nilv <> l0 :>listv /\ x0 = Headv x l0 :>var.
 intros; split.
-apply Headv_REMOVE_Consv_Nilv with l x x0; auto with v62.
+apply Headv_REMOVE_Consv_Nilv with l x x0; auto with arith.
 cut (REMOVE x (Consv x0 l) l0).
-2: auto with v62.
+2: auto with arith.
 elim l0.
 simpl in |- *; intros h; elim h.
-intros h0; elim h0; auto with v62.
-intros h0; elim h0; intros; absurd False; auto with v62.
+intros h0; elim h0; auto with arith.
+intros h0; elim h0; intros; absurd False; auto with arith.
 intros; simpl in |- *.
 elim H2; intros.
 elim H3; intros.
-absurd (x = x0 :>var); auto with v62.
-elim H3; intros h1 h2; elim h2; auto with v62.
+absurd (x = x0 :>var); auto with arith.
+elim H3; intros h1 h2; elim h2; auto with arith.
 Qed.
 
 (*******************************************************************)
@@ -278,10 +278,10 @@ Lemma REMOVE_IS_IN_LV_IS_IN_LV :
  forall (l l0 : listv) (x x0 : var),
  REMOVE x l l0 -> IS_IN_LV x0 l0 -> IS_IN_LV x0 l.
 intros l l0 x x0 h; cut (remove x l l0).
-2: apply REMOVE_remove; auto with v62.
-intro; elim H; simpl in |- *; auto with v62.
+2: apply REMOVE_remove; auto with arith.
+intro; elim H; simpl in |- *; auto with arith.
 intros.
-elim H3; intros; auto with v62.
+elim H3; intros; auto with arith.
 Qed.
 
 Lemma REMOVE_n_eq_IS_IN_LV_IS_IN_LV :
@@ -289,13 +289,13 @@ Lemma REMOVE_n_eq_IS_IN_LV_IS_IN_LV :
  REMOVE x l l0 ->
  forall x0 : var, x <> x0 :>var -> IS_IN_LV x0 l -> IS_IN_LV x0 l0.
 intros l l0 x H; cut (remove x l l0).
-2: apply REMOVE_remove; auto with v62.
-intro; elim H0; simpl in |- *; auto with v62.
+2: apply REMOVE_remove; auto with arith.
+intro; elim H0; simpl in |- *; auto with arith.
 intros.
-elim H4; auto with v62.
-intros; absurd (x = x0 :>var); auto with v62.
+elim H4; auto with arith.
+intros; absurd (x = x0 :>var); auto with arith.
 intros.
-elim H5; auto with v62.
+elim H5; auto with arith.
 Qed.
 
 (**********************************************************************)
@@ -311,14 +311,14 @@ Lemma st_inclv_Consv_REMOVE_n_IS_IN_LV_st_inclv :
 intros l l0 l1 x h; elim h.
 simpl in |- *; intros.
 apply st_inclv_init with x0.
-unfold not in |- *; intros; apply H; auto with v62.
+unfold not in |- *; intros; apply H; auto with arith.
 cut (x0 <> x :>var).
-intros; apply (REMOVE_n_eq_IS_IN_LV_IS_IN_LV l0 l1 x); auto with v62.
-unfold not in |- *; intros; elim H4; auto with v62.
-(*unfold not;intros;apply H;auto with v62.*)
+intros; apply (REMOVE_n_eq_IS_IN_LV_IS_IN_LV l0 l1 x); auto with arith.
+unfold not in |- *; intros; elim H4; auto with arith.
+(*unfold not;intros;apply H;auto with arith.*)
 intros; cut (x <> y :>var).
-intros; apply (REMOVE_n_eq_IS_IN_LV_IS_IN_LV l0 l1 x); auto with v62.
-unfold not in |- *; intros; apply H3; replace x with y; auto with v62.
+intros; apply (REMOVE_n_eq_IS_IN_LV_IS_IN_LV l0 l1 x); auto with arith.
+unfold not in |- *; intros; apply H3; replace x with y; auto with arith.
 Qed.
 
 (**********************************************************************)
@@ -331,7 +331,7 @@ Lemma REMOVE_n_IS_IN_LV_DIFFELNB_pred :
  forall (l0 : listv) (x : var),
  REMOVE x l l0 -> IS_IN_LV x l -> DIFFELNB l0 (pred n).
 intros l n h; cut (diffelnb l n).
-2: apply DIFFELNB_diffelnb; auto with v62.
+2: apply DIFFELNB_diffelnb; auto with arith.
 intros H; elim H.
 (* Case1 :  l=Nilv *)
 simpl in |- *; tauto.
@@ -339,8 +339,8 @@ simpl in |- *; tauto.
 intros until x0; elim (var_eq_decP x x0); intro.
 (* Case2 ... H3:<var>x=x0*)
 elim H3; intros.
-apply H1 with x; auto with v62.
-apply REMOVE_Consv_eq; auto with v62.
+apply H1 with x; auto with arith.
+apply REMOVE_Consv_eq; auto with arith.
 (* Case2 ... H3:~<var>x=x0*)
 elim l1.
 (* Case2 ... H3:~<var>x=x0;l1=Nilv**)
@@ -348,12 +348,12 @@ simpl in |- *; intros.
 elimtype False; intuition.
 (* Case2 ... H3:~<var>x=x0;l1=(Consv v y)*)
 intros v y h0 h1; elim h1; intros.
-elim H4; intros; absurd (x = x0 :>var); auto with v62.
+elim H4; intros; absurd (x = x0 :>var); auto with arith.
 elim H4; intros h2 h3; elim h3; intros h4 h5; elim h4.
 apply diffelnb_DIFFELNB; apply diffelnb_Consv_in.
-apply DIFFELNB_diffelnb; apply (H1 y x0); auto with v62.
-elim H5; intros; auto with v62; absurd (x = x0 :>var); auto with v62.
-apply REMOVE_n_eq_IS_IN_LV_IS_IN_LV with l0 x0; auto with v62.
+apply DIFFELNB_diffelnb; apply (H1 y x0); auto with arith.
+elim H5; intros; auto with arith; absurd (x = x0 :>var); auto with arith.
+apply REMOVE_n_eq_IS_IN_LV_IS_IN_LV with l0 x0; auto with arith.
 
 (* Case3 l=(Consv x l0) and ~(IS_IN_LV x l0) *) 
 intros l0 n0 x H0 H1 H2 l1; elim l1.
@@ -361,13 +361,13 @@ intros l0 n0 x H0 H1 H2 l1; elim l1.
 intros x0 H3 H4.
 elim H3; intros h0; elim h0; intros.
 cut (~ IS_IN_LV x l0).
-2: auto with v62.
+2: auto with arith.
 elim H5; intros; cut (l0 = Nilv :>listv).
-2: apply REMOVE_n_IS_IN_LV_eq with x0; auto with v62.
+2: apply REMOVE_n_IS_IN_LV_eq with x0; auto with arith.
 intros; cut (DIFFELNB l0 n0).
-2: apply diffelnb_DIFFELNB; auto with v62; replace l0 with Nilv;
-    simpl in |- *; auto with v62.
-elim H8; simpl in |- *; auto with v62.
+2: apply diffelnb_DIFFELNB; auto with arith; replace l0 with Nilv;
+    simpl in |- *; auto with arith.
+elim H8; simpl in |- *; auto with arith.
 elim H6.
 (*Case3 ...l1=(Consv v l2)*)
 intros v l2 H3 x0 H4 H5.
@@ -377,27 +377,27 @@ elim H4; intros.
 (*           and (REMOVE x0 l0 (Consv v l2))*)
 elim H6; intros.
 cut (DIFFELNB l0 n0).
-2: apply diffelnb_DIFFELNB; auto with v62.
+2: apply diffelnb_DIFFELNB; auto with arith.
 cut (~ IS_IN_LV x l0).
-2: auto with v62.
+2: auto with arith.
 elim H7; intros; replace (Consv v l2) with l0;
- try apply REMOVE_n_IS_IN_LV_eq with x0; auto with v62.
+ try apply REMOVE_n_IS_IN_LV_eq with x0; auto with arith.
 (*Case3 ...l1=(Consv v y))and ~<var>x0=x*)
 (*                         and <var>x=v) and (REMOVE x0 l0 y) *)
 elim H6; intros h0 h1; elim h1; intros.
 elim H5; intros.
 cut (DIFFELNB l2 (pred n0)).
-2: apply (H1 l2 x0); auto with v62.
+2: apply (H1 l2 x0); auto with arith.
 cut (DIFFELNB l0 n0).
-2: apply diffelnb_DIFFELNB; auto with v62.
+2: apply diffelnb_DIFFELNB; auto with arith.
 pattern n0 in |- *; apply (nat_case n0).
-simpl in |- *; intros; absurd (IS_IN_LV x0 l0); auto with v62.
-replace l0 with Nilv; try apply DIFFELNB_O; auto with v62.
+simpl in |- *; intros; absurd (IS_IN_LV x0 l0); auto with arith.
+replace l0 with Nilv; try apply DIFFELNB_O; auto with arith.
 simpl in |- *; intros.
-elim H7; right; split; auto with v62.
+elim H7; right; split; auto with arith.
 unfold not in |- *; intros; elim H2;
- apply (REMOVE_IS_IN_LV_IS_IN_LV l0 l2 x0); auto with v62.
-absurd (x0 = x :>var); auto with v62.
+ apply (REMOVE_IS_IN_LV_IS_IN_LV l0 l2 x0); auto with arith.
+absurd (x0 = x :>var); auto with arith.
 Qed.
 
 (**********************************************************************)
@@ -409,45 +409,45 @@ Lemma DIFFELNB_st_inclv_le_S :
  DIFFELNB l n ->
  forall (l0 : listv) (n0 : nat), DIFFELNB l0 n0 -> st_inclv l l0 -> S n <= n0.
 intros l n hyp; cut (diffelnb l n).
-2: apply DIFFELNB_diffelnb; auto with v62.
+2: apply DIFFELNB_diffelnb; auto with arith.
 intros h; elim h.
 (* Case1 :  l=Nilv *)
 intros l0 n0; pattern n0 in |- *; apply (nat_case n0).
 simpl in |- *; intros.
-elim H0; intros; cut (DIFFELNB l0 0); auto with v62.
-intros; absurd (IS_IN_LV x l0); auto with v62.
+elim H0; intros; cut (DIFFELNB l0 0); auto with arith.
+intros; absurd (IS_IN_LV x l0); auto with arith.
 cut (Nilv = l0 :>listv).
-intros H5; elim H5; simpl in |- *; auto with v62.
-apply DIFFELNB_O; auto with v62.
-intros; auto with v62.
+intros H5; elim H5; simpl in |- *; auto with arith.
+apply DIFFELNB_O; auto with arith.
+intros; auto with arith.
 (* Case2 l=(Consv x l0) and (IS_IN_LV x l0) *)
 intros until n1; pattern n1 in |- *; apply (nat_case n1).
 intros h0 h1; elim h1; intros.
-absurd (IS_IN_LV x0 l1); auto with v62.
+absurd (IS_IN_LV x0 l1); auto with arith.
 cut (Nilv = l1 :>listv).
-intros H5; elim H5; simpl in |- *; auto with v62.
-apply DIFFELNB_O; auto with v62.
-intros; apply (H0 l1 (S m)); auto with v62.
+intros H5; elim H5; simpl in |- *; auto with arith.
+apply DIFFELNB_O; auto with arith.
+intros; apply (H0 l1 (S m)); auto with arith.
 elim H3; intros.
-apply st_inclv_init with x0; auto with v62.
-unfold not in |- *; intros; elim H4; simpl in |- *; auto with v62.
-intros; apply H6; simpl in |- *; auto with v62.
+apply st_inclv_init with x0; auto with arith.
+unfold not in |- *; intros; elim H4; simpl in |- *; auto with arith.
+intros; apply H6; simpl in |- *; auto with arith.
 (* Case3 l=(Consv x l0) and ~(IS_IN_LV x l0) *) 
 intros until n1; pattern n1 in |- *; apply (nat_case n1).
 intros h0 h1; elim h1; intros.
-absurd (IS_IN_LV x0 l1); auto with v62.
+absurd (IS_IN_LV x0 l1); auto with arith.
 cut (Nilv = l1 :>listv).
-intros H5; elim H5; simpl in |- *; auto with v62.
-apply DIFFELNB_O; auto with v62.
+intros H5; elim H5; simpl in |- *; auto with arith.
+apply DIFFELNB_O; auto with arith.
 intros; apply le_n_S.
 elim (exi_REMOVE l1 x); intros l2 H5.
 apply (H0 l2).
 replace m with (pred (S m));
  try apply REMOVE_n_IS_IN_LV_DIFFELNB_pred with l1 x; 
- auto with v62.
+ auto with arith.
 elim H3; intros.
-apply (H7 x); simpl in |- *; auto with v62.
-apply st_inclv_Consv_REMOVE_n_IS_IN_LV_st_inclv with l1 x; auto with v62.
+apply (H7 x); simpl in |- *; auto with arith.
+apply st_inclv_Consv_REMOVE_n_IS_IN_LV_st_inclv with l1 x; auto with arith.
 Qed.
 
 (**********************************************************************)
@@ -459,31 +459,31 @@ Lemma inclv_le :
  DIFFELNB l n ->
  forall (l0 : listv) (n0 : nat), DIFFELNB l0 n0 -> inclv l l0 -> n <= n0.
 intros l n hyp; cut (diffelnb l n).
-2: apply DIFFELNB_diffelnb; auto with v62.
+2: apply DIFFELNB_diffelnb; auto with arith.
 intros h; elim h.
 (* Case1 :  l=Nilv *)
-auto with v62. (*apply le_O_n*)
+auto with arith. (*apply le_O_n*)
 (* Case2 l=(Consv x l0) and (IS_IN_LV x l0) *)
 intros.
-apply H0 with l1; auto with v62.
-apply inclv_init; intros; elim H3; simpl in |- *; auto with v62.
+apply H0 with l1; auto with arith.
+apply inclv_init; intros; elim H3; simpl in |- *; auto with arith.
 (* Case3 l=(Consv x l0) and ~(IS_IN_LV x l0) *) 
 intros until n1; pattern n1 in |- *; apply (nat_case n1).
 intros; absurd (IS_IN_LV x l1).
 cut (Nilv = l1 :>listv).
-2: apply DIFFELNB_O; auto with v62.
-intros H4; elim H4; simpl in |- *; auto with v62.
-elim H3; simpl in |- *; auto with v62.
+2: apply DIFFELNB_O; auto with arith.
+intros H4; elim H4; simpl in |- *; auto with arith.
+elim H3; simpl in |- *; auto with arith.
 intros; elim (exi_REMOVE l1 x); intros.
 apply le_n_S; apply H0 with x0.
-replace m with (pred (S m)); auto with v62.
-apply REMOVE_n_IS_IN_LV_DIFFELNB_pred with l1 x; auto with v62.
-elim H3; simpl in |- *; auto with v62.
+replace m with (pred (S m)); auto with arith.
+apply REMOVE_n_IS_IN_LV_DIFFELNB_pred with l1 x; auto with arith.
+elim H3; simpl in |- *; auto with arith.
 apply inclv_init; intros.
-apply REMOVE_n_eq_IS_IN_LV_IS_IN_LV with l1 x; auto with v62.
-unfold not in |- *; intros h0; absurd (IS_IN_LV y l0); auto with v62; elim h0;
- auto with v62.
-elim H3; simpl in |- *; auto with v62.
+apply REMOVE_n_eq_IS_IN_LV_IS_IN_LV with l1 x; auto with arith.
+unfold not in |- *; intros h0; absurd (IS_IN_LV y l0); auto with arith; elim h0;
+ auto with arith.
+elim H3; simpl in |- *; auto with arith.
 Qed.
 
 (*******************************************************************)
@@ -523,23 +523,23 @@ Fixpoint list_var (t : quasiterm) : listv :=
 (*******************************************************************)
 
 Goal forall (t : quasiterm) (x : var), IS_IN x t -> IS_IN_LV x (list_var t).
-simple induction t; simpl in |- *; intros; auto with v62.
+simple induction t; simpl in |- *; intros; auto with arith.
 (*Case t=(V v) : apply or_is_inror ; assumption
 Case t=(C c) : assumption
 Case t=(Root f y) : apply H ; assumption *)
 (*Case t=(ConsArg y y0) *) 
 elim H1; intros.
-apply IS_IN_LV_Appv1; auto with v62.
-apply IS_IN_LV_Appv2; auto with v62.
+apply IS_IN_LV_Appv1; auto with arith.
+apply IS_IN_LV_Appv2; auto with arith.
 Save IS_IN_IS_IN_LV.
 
 Goal forall (t : quasiterm) (x : var), IS_IN_LV x (list_var t) -> IS_IN x t.
-simple induction t; simpl in |- *; auto with v62.
+simple induction t; simpl in |- *; auto with arith.
 tauto.
 (*Case t=(ConsArg y y0) *)
 intros q H q0 H0 x H1;
  elim (IS_IN_LV_Appv_IS_IN_LV (list_var q) (list_var q0) x H1); 
- intros; auto with v62.
+ intros; auto with arith.
 Save IS_IN_LV_IS_IN.
 
 (**********************************************************************)
@@ -549,8 +549,8 @@ Goal forall t : quasiterm, DIFFELNB (list_var t) 0 -> clos t.
 intros; apply clos_init.
 unfold not in |- *; intros x h; absurd (IS_IN_LV x (list_var t)).
 replace (list_var t) with Nilv; try apply (DIFFELNB_O (list_var t));
- auto with v62.
-apply IS_IN_IS_IN_LV; auto with v62.
+ auto with arith.
+apply IS_IN_IS_IN_LV; auto with arith.
 Save DIFFELNB_O_clos.
 
 (**********************************************************************)
@@ -560,21 +560,21 @@ Save DIFFELNB_O_clos.
 Goal forall t1 t2 : quasiterm, clos (ConsArg t1 t2) -> clos t1.
 intros; elim H; intros; apply clos_init.
 intros x; unfold not in |- *; intros; elim (H0 x); simpl in |- *;
- auto with v62.
+ auto with arith.
 Save closConsArg1.
 
 Goal forall t1 t2 : quasiterm, clos (ConsArg t1 t2) -> clos t2.
 intros; elim H; intros; apply clos_init.
 intros x; unfold not in |- *; intros; elim (H0 x); simpl in |- *;
- auto with v62.
+ auto with arith.
 Save closConsArg2.
 
 Goal forall t1 t2 : quasiterm, clos (ConsArg t1 t2) -> clos t1 /\ clos t2.
 intros; elim H; intros; split; apply clos_init.
 intros x; unfold not in |- *; intros; elim (H0 x); simpl in |- *;
- auto with v62.
+ auto with arith.
 intros x; unfold not in |- *; intros; elim (H0 x); simpl in |- *;
- auto with v62.
+ auto with arith.
 Save closConsArg.
 
 Goal forall (f : fun_) (y : quasiterm), clos (Root f y) -> clos y.
@@ -584,48 +584,48 @@ intros.
 apply clos_init.
 intros.
 generalize (H0 x).
-simpl in |- *; auto with v62.
+simpl in |- *; auto with arith.
 Save closRoot.
 
 Goal forall t : quasiterm, clos t -> DIFFELNB (list_var t) 0.
 simple induction t.
 (*Case t=(V v) *)
 intros; elim H.
-simpl in |- *; intros; absurd (v = v :>var); auto with v62.
+simpl in |- *; intros; absurd (v = v :>var); auto with arith.
 (*Case t=(C c) *)
-intros; simpl in |- *; auto with v62.
+intros; simpl in |- *; auto with arith.
 (*Case t=(Root f y) *)
 intros; simpl in |- *; apply H; generalize (closRoot _ _ H0);
- auto with v62.
+ auto with arith.
 (*Case t=(ConsArg y y0) *)
 simpl in |- *; intros q H q0 H0 H1.
 elim (closConsArg q q0 H1); intros.
-replace (list_var q) with Nilv; try apply DIFFELNB_O; auto with v62.
+replace (list_var q) with Nilv; try apply DIFFELNB_O; auto with arith.
 Save clos_DIFFELNBO.
 
 Goal
 forall t0 t1 : quasiterm, infv t0 t1 -> st_inclv (list_var t0) (list_var t1).
 intros; elim H; intros.
 apply st_inclv_init with x.
-unfold not in |- *; intros; elim H0; apply IS_IN_LV_IS_IN; auto with v62.
-apply IS_IN_IS_IN_LV; auto with v62.
-intros; apply IS_IN_IS_IN_LV; apply H2; apply IS_IN_LV_IS_IN; auto with v62. 
+unfold not in |- *; intros; elim H0; apply IS_IN_LV_IS_IN; auto with arith.
+apply IS_IN_IS_IN_LV; auto with arith.
+intros; apply IS_IN_IS_IN_LV; apply H2; apply IS_IN_LV_IS_IN; auto with arith. 
 Save infv_st_inclv.
 
 Goal
 forall t0 t1 : quasiterm, st_inclv (list_var t0) (list_var t1) -> infv t0 t1.
 intros; elim H; intros.
 apply infv_init with x.
-unfold not in |- *; intros; elim H0; apply IS_IN_IS_IN_LV; auto with v62.
-apply IS_IN_LV_IS_IN; auto with v62.
-intros; apply IS_IN_LV_IS_IN; apply H2; apply IS_IN_IS_IN_LV; auto with v62. 
+unfold not in |- *; intros; elim H0; apply IS_IN_IS_IN_LV; auto with arith.
+apply IS_IN_LV_IS_IN; auto with arith.
+intros; apply IS_IN_LV_IS_IN; apply H2; apply IS_IN_IS_IN_LV; auto with arith. 
 Save st_inclv_infv.
 
 Goal forall t : quasiterm, clos t -> forall t0 : quasiterm, ~ infv t0 t.
 unfold not in |- *; intros.
 elim H; intros.
 elim H0; intros.
-elim (H1 x); auto with v62.
+elim (H1 x); auto with arith.
 Save n_infv_t_clos.
 
 (**********************************************************************)
@@ -635,20 +635,20 @@ Save n_infv_t_clos.
 Goal
 forall (f : quasisubst) (t : quasiterm),
 (forall x : var, V x = f x :>quasiterm) -> t = Subst f t :>quasiterm.
-simple induction t; simpl in |- *; auto with v62; intros.
-elim H; auto with v62.
-elim H; elim H0; auto with v62.
+simple induction t; simpl in |- *; auto with arith; intros.
+elim H; auto with arith.
+elim H; elim H0; auto with arith.
 Save eq_V_stab.
 
 Goal forall t : quasiterm, t = Subst V t :>quasiterm.
-intros; apply eq_V_stab; auto with v62.
+intros; apply eq_V_stab; auto with arith.
 Save V_stab.
 
 Goal
 forall (t : quasiterm) (f : quasisubst), clos t -> t = Subst f t :>quasiterm.
 intros; elim H; intros.
 apply trans_equal with (Subst V t); try apply V_stab.
-apply eq_restriction_s_t; intros; absurd (IS_IN x t); auto with v62.
+apply eq_restriction_s_t; intros; absurd (IS_IN x t); auto with arith.
 Save clossubst.
 
 (**********************************************************************)
@@ -659,12 +659,12 @@ Save clossubst.
 Definition dom (f : quasisubst) (x : var) : Prop := V x <> f x :>quasiterm.
 
 Goal forall (f : quasisubst) (x : var), ~ dom f x -> V x = f x :>quasiterm.
-intros f x; elim (quasiterm_eq_decP (V x) (f x)); intros; auto with v62.
-elim H0; auto with v62.
+intros f x; elim (quasiterm_eq_decP (V x) (f x)); intros; auto with arith.
+elim H0; auto with arith.
 Save n_dom.
 
 Goal forall (f : quasisubst) (x : var), dom f x \/ ~ dom f x.
-intros f x; elim (quasiterm_eq_decP (V x) (f x)); intros; auto with v62.
+intros f x; elim (quasiterm_eq_decP (V x) (f x)); intros; auto with arith.
 Save dom_decP.
 
 (**********************************************************************)
@@ -680,7 +680,7 @@ Goal
 forall (f : quasisubst) (x : var),
 ~ range f x -> forall y : var, dom f y -> ~ IS_IN x (f y).
 unfold not in |- *; intros.
-elim H; apply range_init with y; auto with v62.
+elim H; apply range_init with y; auto with arith.
 Save n_range_n_IS_IN.
 
 Goal
@@ -689,21 +689,21 @@ forall (f : quasisubst) (x y : var),
 intros.
 elim (dom_decP f y); intros h.
 (*Case (dom f y) *)
-absurd (IS_IN x (f y)); auto with v62.
+absurd (IS_IN x (f y)); auto with arith.
 unfold not in |- *; intros; elim H; intros.
-apply range_init with y; auto with v62.
+apply range_init with y; auto with arith.
 (*Case ~(dom f y) *)
 change (IS_IN x (V y)) in |- *.
-replace (V y) with (f y); auto with v62.
-elim (n_dom f y); auto with v62.
+replace (V y) with (f y); auto with arith.
+elim (n_dom f y); auto with arith.
 Save n_range_IS_IN_eq.
 
 Goal
 forall (f : quasisubst) (t : quasiterm) (x : var),
 ~ range f x -> IS_IN x (Subst f t) -> IS_IN x t.
-simple induction t; simpl in |- *; intros; auto with v62.
-simpl in |- *; intros; apply n_range_IS_IN_eq with f; auto with v62.
-elim H2; intros; auto with v62.
+simple induction t; simpl in |- *; intros; auto with arith.
+simpl in |- *; intros; apply n_range_IS_IN_eq with f; auto with arith.
+elim H2; intros; auto with arith.
 Save n_range_IS_IN_Subst.
 
 (**********************************************************************)
@@ -734,17 +734,17 @@ Definition under (s : quasisubst) (t : quasiterm) : Prop :=
 Goal
 forall (f : quasisubst) (t : quasiterm) (x : var),
 IS_IN x (Subst f t) -> exists y : var, IS_IN y t /\ IS_IN x (f y).
-simple induction t; simpl in |- *; intros; auto with v62. (*Case t=(Root f u) *)
+simple induction t; simpl in |- *; intros; auto with arith. (*Case t=(Root f u) *)
 (*Case t=(V v) *)
-exists v; auto with v62.
+exists v; auto with arith.
 (*Case t=(C c) *)
 elim H.
 (*Case t=(ConsArg y y0) *)
 elim H1; intros.
-elim H with x; intros; auto with v62.
-elim H3; intros; exists x0; auto with v62.
-elim H0 with x; intros; auto with v62.
-elim H3; intros; exists x0; auto with v62.
+elim H with x; intros; auto with arith.
+elim H3; intros; exists x0; auto with arith.
+elim H0 with x; intros; auto with arith.
+elim H3; intros; exists x0; auto with arith.
 Save IS_IN_Subst_exi_IS_IN.
 
 Goal
@@ -753,11 +753,11 @@ under f t -> forall x : var, IS_IN x (Subst f t) -> IS_IN x t.
 unfold under in |- *; intros.
 elim (IS_IN_Subst_exi_IS_IN f t x H0); intros x0 h; elim h; intros.
 elim (var_eq_decP x0 x); intros h0.
-elim h0; auto with v62.
-apply (H x x0); auto with v62.
+elim h0; auto with arith.
+apply (H x x0); auto with arith.
 unfold dom in |- *; unfold not in |- *; intros.
 elim h0; symmetry  in |- *; change (IS_IN x (V x0)) in |- *.
-replace (V x0) with (f x0); auto with v62.
+replace (V x0) with (f x0); auto with arith.
 Save under_IS_IN_Subst_IS_IN.
 
 (**********************************************************************)
@@ -794,7 +794,7 @@ Definition SUB (t1 t2 : quasiterm) : Prop := SUP t2 t1.
 (**********************************************************************)
 
 Goal forall t1 t2 : quasiterm, sub t1 t2 -> SUB t1 t2.
-intros; elim H; unfold SUB in |- *; simpl in |- *; auto with v62.
+intros; elim H; unfold SUB in |- *; simpl in |- *; auto with arith.
 Save sub_SUB.
 
 Goal forall t1 t2 : quasiterm, SUB t1 t2 -> sub t1 t2.
@@ -806,15 +806,15 @@ elim H.
 (*Case t=(Root f y) *)
 elim H0; intros.
 elim H1; apply subRoot.
-apply subRoot2; auto with v62.
+apply subRoot2; auto with arith.
 (*Case t=(ConsArg y y0) *)
 elim H1; intros.
 elim H2; apply subConsArgl.
 elim H2; intros.
 elim H3; apply subConsArgr.
 elim H3; intros.
-apply subConsArgl2; auto with v62.
-apply subConsArgr2; auto with v62.
+apply subConsArgl2; auto with arith.
+apply subConsArgr2; auto with arith.
 Save SUB_sub.
 
 (**********************************************************************)
@@ -823,24 +823,24 @@ Save SUB_sub.
 
 Goal forall v u w : quasiterm, SUP v u -> SUP w v -> SUP w u.
 simple induction v.
-intros; absurd False; auto with v62. (*Case v=(V v0) *)
-intros; absurd False; auto with v62. (*Case v=(C f) *)
+intros; absurd False; auto with arith. (*Case v=(V v0) *)
+intros; absurd False; auto with arith. (*Case v=(C f) *)
 (*Case v=(Root f y)*)
 simple induction w.
-intros; absurd False; auto with v62. (*Case w=(V v0) *)
-intros; absurd False; auto with v62. (*Case w=(C f0) *)
+intros; absurd False; auto with arith. (*Case w=(V v0) *)
+intros; absurd False; auto with arith. (*Case w=(C f0) *)
 (*Case v=(Root f y);w=(Root f0 y0)*)
 intros.
-elim H2; intros; elim H1; intros; simpl in |- *; auto with v62.
-elim H4; replace q0 with (Root f q); simpl in |- *; auto with v62.
-replace q0 with (Root f q); simpl in |- *; auto with v62.
+elim H2; intros; elim H1; intros; simpl in |- *; auto with arith.
+elim H4; replace q0 with (Root f q); simpl in |- *; auto with arith.
+replace q0 with (Root f q); simpl in |- *; auto with arith.
 (*Case v=(Root f y);w=(ConsArg y0 y1)*)
 intros q0 H0 q1 H1 H2 H3.
 elim H3; intro H4.
-replace q0 with (Root f q); simpl in |- *; auto with v62.
+replace q0 with (Root f q); simpl in |- *; auto with arith.
 elim H4; intro H5.
-replace q1 with (Root f q); simpl in |- *; auto with v62.
-elim H5; intros; simpl in |- *; auto with v62.
+replace q1 with (Root f q); simpl in |- *; auto with arith.
+elim H5; intros; simpl in |- *; auto with arith.
 (*Case v=(ConsArg y y0)*)
 simple induction w.
 tauto. (*Case w=(V v0) *)
@@ -848,44 +848,44 @@ tauto. (*Case w=(C f0) *)
 (*Case v=(ConsArg y y0);w=(Root f0 y0)*)
 intros f q1 H1 H2 H3.
 elim H3; intros.
-replace q1 with (ConsArg q q0); simpl in |- *; auto with v62.
-simpl in |- *; auto with v62.
+replace q1 with (ConsArg q q0); simpl in |- *; auto with arith.
+simpl in |- *; auto with arith.
 (*Case v=(ConsArg y y0);w=(ConsArg y0 y1)*)
 intros q1 H1 q2 H2 H3 H4.
 elim H4; intro H5.
 elim H3; intro H6.
-elim H6; intros; replace q1 with (ConsArg q q0); simpl in |- *; auto with v62.
-replace q1 with (ConsArg q q0); simpl in |- *; auto with v62.
+elim H6; intros; replace q1 with (ConsArg q q0); simpl in |- *; auto with arith.
+replace q1 with (ConsArg q q0); simpl in |- *; auto with arith.
 elim H5; intro H6.
-replace q2 with (ConsArg q q0); simpl in |- *; auto with v62.
-elim H6; intros; simpl in |- *; auto with v62.
+replace q2 with (ConsArg q q0); simpl in |- *; auto with arith.
+elim H6; intros; simpl in |- *; auto with arith.
 Save trans_SUP.
 
 Goal forall v u w : quasiterm, SUB u v -> SUB v w -> SUB u w.
-unfold SUB in |- *; intros; apply trans_SUP with v; auto with v62.
+unfold SUB in |- *; intros; apply trans_SUP with v; auto with arith.
 Save trans_SUB.
 
 Goal forall v u : quasiterm, SUB u v -> u <> v.
 intros.
-unfold not in |- *; intros h; cut (SUB u v); auto with v62; elim h.
-elim u; simpl in |- *; auto with v62. (*Case u=(V v) or u=(C f)*)
+unfold not in |- *; intros h; cut (SUB u v); auto with arith; elim h.
+elim u; simpl in |- *; auto with arith. (*Case u=(V v) or u=(C f)*)
 (*Case u=(Root f q)*)
 intros.
 elim H1; intros.
-apply H0; pattern q in |- *; replace q with (Root f q); auto with v62.
+apply H0; pattern q in |- *; replace q with (Root f q); auto with arith.
 apply H0; apply trans_SUB with (Root f q); unfold SUB in |- *; simpl in |- *;
- auto with v62.
+ auto with arith.
 (*Case u=(ConsArg y y0)*)
 intros.
 elim H2; intros.
-apply H0; pattern q in |- *; replace q with (ConsArg q q0); auto with v62.
+apply H0; pattern q in |- *; replace q with (ConsArg q q0); auto with arith.
 elim H3; intros.
-apply H1; pattern q0 in |- *; replace q0 with (ConsArg q q0); auto with v62.
+apply H1; pattern q0 in |- *; replace q0 with (ConsArg q q0); auto with arith.
 elim H4; intros.
 apply H0; apply trans_SUB with (ConsArg q q0); unfold SUB in |- *;
- simpl in |- *; auto with v62.
+ simpl in |- *; auto with arith.
 apply H1; apply trans_SUB with (ConsArg q q0); unfold SUB in |- *;
- simpl in |- *; auto with v62.
+ simpl in |- *; auto with arith.
 Save SUB_diff.
 
 Goal
@@ -895,34 +895,34 @@ unfold SUB in |- *; simple induction t2; simpl in |- *; intros.
 elim H.
 elim H.
 elim H0; intros h0.
-elim h0; auto with v62.
-auto with v62.
+elim h0; auto with arith.
+auto with arith.
 elim H1; intros h1.
-elim h1; auto with v62.
-elim h1; intros h2; elim h2; auto with v62.
+elim h1; auto with arith.
+elim h1; intros h2; elim h2; auto with arith.
 Save SUB_subst.
 
 Goal
 forall (x : var) (t : quasiterm) (f : quasisubst),
 IS_IN x t -> V x <> t :>quasiterm -> SUB (f x) (Subst f t).
 intros; change (SUB (Subst f (V x)) (Subst f t)) in |- *; apply SUB_subst.
-unfold SUB in |- *; cut (V x <> t :>quasiterm); auto with v62;
- cut (IS_IN x t); try apply IS_IN_is_in; auto with v62.
+unfold SUB in |- *; cut (V x <> t :>quasiterm); auto with arith;
+ cut (IS_IN x t); try apply IS_IN_is_in; auto with arith.
 elim t.
 (*Case t=(V v)*)
-simpl in |- *; intros; absurd (V x = V v :>quasiterm); auto with v62.
+simpl in |- *; intros; absurd (V x = V v :>quasiterm); auto with arith.
 
 (*Case t=(C f)*)
-simpl in |- *; intros; absurd False; auto with v62.
+simpl in |- *; intros; absurd False; auto with arith.
 (*Case t=(Root f0 q)*)
 intros; elim (quasiterm_eq_decP (V x) q); intros.
-elim H4; simpl in |- *; auto with v62.
-cut (IS_IN x (Root f0 q)); simpl in |- *; auto with v62.
+elim H4; simpl in |- *; auto with arith.
+cut (IS_IN x (Root f0 q)); simpl in |- *; auto with arith.
 (*Case t=(ConsArg q q0)*)
 simpl in |- *; intros.
-elim (quasiterm_eq_decP (V x) q); intros; auto with v62.
-elim (quasiterm_eq_decP (V x) q0); intros; auto with v62.
-elim H3; intros; auto with v62.
+elim (quasiterm_eq_decP (V x) q); intros; auto with arith.
+elim (quasiterm_eq_decP (V x) q0); intros; auto with arith.
+elim H3; intros; auto with arith.
 Save IS_IN_SUB.
 
 (*****************************************************************)
@@ -945,12 +945,12 @@ forall f : quasisubst,
 unfold idempotent in |- *; intros.
 elim (quasiterm_eq_decP (V x) (f x)); intros h.
 (*Case <quasiterm>(V x)=(f x)*)
-elim h; auto with v62.
+elim h; auto with arith.
 (*Case ~<quasiterm>(V x)=(f x)*)
 apply trans_equal with (Subst V (f x)).
 apply V_stab.
 apply eq_restriction_s_t.
-intros; apply H; apply range_init with x; auto with v62.
+intros; apply H; apply range_init with x; auto with arith.
 Save range_n_dom_idempotent.
 
 (*****************************************************************)
@@ -962,8 +962,8 @@ Goal
 forall f : quasisubst, idempotent f -> forall x : var, dom f x -> ~ range f x.
 unfold not in |- *; intros.
 elim H0; elim H1; intros.
-apply (eq_restriction_t_s (f y) V f); auto with v62.
-elim H; elim V_stab with (f y); auto with v62.
+apply (eq_restriction_t_s (f y) V f); auto with arith.
+elim H; elim V_stab with (f y); auto with arith.
 Save idempotent_n_range.
 
 (*****************************************************************)
@@ -976,12 +976,12 @@ idempotent f -> forall x : var, dom f x -> forall y : var, ~ IS_IN x (f y).
 intros.
 elim (dom_decP f y); intros.
 (*Case (dom f y)*)
-apply n_range_n_IS_IN; auto with v62.
-apply idempotent_n_range; auto with v62.
+apply n_range_n_IS_IN; auto with arith.
+apply idempotent_n_range; auto with arith.
 (*Case ~(dom f y)*)
 elim (n_dom f y H1); simpl in |- *.
-unfold not in |- *; intros h; absurd (dom f y); auto with v62; elim h;
- auto with v62.
+unfold not in |- *; intros h; absurd (dom f y); auto with arith; elim h;
+ auto with arith.
 Save idempotent_dom_n_IS_IN.
 
 (*****************************************************************)
@@ -1003,23 +1003,23 @@ unfold under in |- *; unfold over in |- *; intros;
 elim H3; intros.
 elim (dom_decP g x); intros.
 (*Case (dom g x)*)
-absurd (IS_IN x (Subst g (f y))); auto with v62.
+absurd (IS_IN x (Subst g (f y))); auto with arith.
 apply n_IS_IN_Subst.
-intros; apply idempotent_dom_n_IS_IN; auto with v62.
+intros; apply idempotent_dom_n_IS_IN; auto with arith.
 (*Case ~(dom g x)*)
 elim (dom_decP f x); intros.
 (*Case ~(dom g x);(dom f x)*)    
 absurd (IS_IN x (f y)).
-apply idempotent_dom_n_IS_IN; auto with v62.
-apply (n_range_IS_IN_Subst g (f y)); auto with v62.
+apply idempotent_dom_n_IS_IN; auto with arith.
+apply (n_range_IS_IN_Subst g (f y)); auto with arith.
 unfold not in |- *; intros H8; elim H8; intros.
 absurd (IS_IN x (Subst f t)).
 apply n_IS_IN_Subst.
-intros; apply idempotent_dom_n_IS_IN; auto with v62.
-apply (H1 x y0); auto with v62.
+intros; apply idempotent_dom_n_IS_IN; auto with arith.
+apply (H1 x y0); auto with arith.
 (*Case ~(dom g x);~(dom f x)*)
 elim (n_dom f x H7); simpl in |- *; elim (n_dom g x H6); simpl in |- *;
- auto with v62.
+ auto with arith.
 Save idempotent_Fondamental.
 
 (*****************************************************************)
@@ -1029,9 +1029,9 @@ Save idempotent_Fondamental.
 Goal
 forall (f g : quasisubst) (t : quasiterm),
 Subst g (Subst f t) = Subst (fun x : var => Subst g (f x)) t.
-simple induction t; simpl in |- *; intros; auto with v62.
-elim H; auto with v62.
-elim H; elim H0; auto with v62.
+simple induction t; simpl in |- *; intros; auto with arith.
+elim H; auto with arith.
+elim H; elim H0; auto with arith.
 Save comp_subst.
 
 Goal
@@ -1064,10 +1064,10 @@ simpl in |- *; apply H0; unfold not in |- *; intros; elim H2.
 
 apply n_range_IS_IN_Subst with f.
 unfold not in |- *; intros h0; elim h0; intros.
-elim h; apply H1 with y; auto with v62.
-simpl in |- *; elim H3; auto with v62.
+elim h; apply H1 with y; auto with arith.
+simpl in |- *; elim H3; auto with arith.
 simpl in |- *; unfold not in |- *; intros h; elim H2; simpl in |- *; elim h;
- intros; auto with v62.
+ intros; auto with arith.
 Save over_comp.
 
 (******************************************************************)
@@ -1100,17 +1100,17 @@ intros H7; elim (IS_IN_Subst_exi_IS_IN f (ConsArg p3 p4) x0 H7); intros.
 elim H8; intros h1 h2.
 apply under_IS_IN_Subst_IS_IN with f.
 unfold under in |- *; intros.
-elim H with x2 y1; simpl in |- *; auto with v62.
-elim (H0 x0 y0); simpl in |- *; auto with v62.
-elim (H0 x0 y0); simpl in |- *; auto with v62.
+elim H with x2 y1; simpl in |- *; auto with arith.
+elim (H0 x0 y0); simpl in |- *; auto with arith.
+elim (H0 x0 y0); simpl in |- *; auto with arith.
 (*Goal (IS_IN x...)*) 
 elim (IS_IN_Subst_exi_IS_IN g (f y) x H4); intros.
 elim H5; intros.
-apply IS_IN_Subst_IS_IN with x0; auto with v62.
+apply IS_IN_Subst_IS_IN with x0; auto with arith.
 elim (dom_decP f y); intros.
 (**)
-elim (H x0 y); simpl in |- *; auto with v62.
-cut (IS_IN x0 (f y)); auto with v62; elim (n_dom f y H8); intros.
+elim (H x0 y); simpl in |- *; auto with arith.
+cut (IS_IN x0 (f y)); auto with arith; elim (n_dom f y H8); intros.
 elim (dom_decP g x0); intros.
 (**)
 elim (IS_IN_decP x0 (ConsArg (Subst f p3) (Subst f p4))); intros h.
@@ -1118,15 +1118,15 @@ elim (IS_IN_Subst_exi_IS_IN f (ConsArg p3 p4) x0 h); intros x1 h1; elim h1;
  intros.
 elim (dom_decP f x1); intros.
 (**)
-elim H with x0 x1; simpl in |- *; auto with v62.
+elim H with x0 x1; simpl in |- *; auto with arith.
 (**)
-cut (IS_IN x0 (f x1)); auto with v62; elim (n_dom f x1 H13); intros.
-cut (IS_IN x1 (ConsArg p3 p4)); auto with v62; elim H14.
-simpl in |- *; intros h2; elim h2; intros; auto with v62.
-absurd (V x0 = g x0 :>quasiterm); auto with v62.
-absurd (V y = Subst g (f y) :>quasiterm); auto with v62.
+cut (IS_IN x0 (f x1)); auto with arith; elim (n_dom f x1 H13); intros.
+cut (IS_IN x1 (ConsArg p3 p4)); auto with arith; elim H14.
+simpl in |- *; intros h2; elim h2; intros; auto with arith.
+absurd (V x0 = g x0 :>quasiterm); auto with arith.
+absurd (V y = Subst g (f y) :>quasiterm); auto with arith.
 elim (n_dom f y H8); simpl in |- *; elim H9; elim (n_dom g x0 H10);
- auto with v62.
+ auto with arith.
 Save under_comp.
 
 (*****************************************************************)
@@ -1148,18 +1148,18 @@ cut
 unfold over in |- *; intros.
 apply H with (list_var t); intros.
 apply IS_IN_IS_IN_LV.
-elim (IS_IN_decP x t); intros; auto with v62.
-absurd (V x = f x :>quasiterm); auto with v62.
+elim (IS_IN_decP x t); intros; auto with arith.
+absurd (V x = f x :>quasiterm); auto with arith.
 (*proof of the cut*)
 simple induction l; simpl in |- *; intros.
 right; intros.
-elim (quasiterm_eq_decP (V v) (f v)); intros; auto with v62.
+elim (quasiterm_eq_decP (V v) (f v)); intros; auto with arith.
 elim (H v H0).
 elim (quasiterm_eq_decP (V v) (f v)); intros.
 apply (H f); intros.
-elim (H0 x H2); intros; auto with v62.
-absurd (V v = f v :>quasiterm); auto with v62; elim H3; auto with v62.
-left; exists v; auto with v62.
+elim (H0 x H2); intros; auto with arith.
+absurd (V v = f v :>quasiterm); auto with arith; elim H3; auto with arith.
+left; exists v; auto with arith.
 Save ident_or_not.
 
 Goal
@@ -1175,18 +1175,18 @@ cut
 unfold over in |- *; intros.
 apply H with (list_var t); intros.
 apply IS_IN_IS_IN_LV.
-elim (IS_IN_decP x t); intros; auto with v62.
-absurd (V x = f x :>quasiterm); auto with v62.
+elim (IS_IN_decP x t); intros; auto with arith.
+absurd (V x = f x :>quasiterm); auto with arith.
 (**)
 simple induction l; simpl in |- *; intros.
 right; intros.
-elim (quasiterm_eq_decP (V x) (f x)); intros; auto with v62.
+elim (quasiterm_eq_decP (V x) (f x)); intros; auto with arith.
 elim (H x H0).
 elim (quasiterm_eq_decS (V v) (f v)); intros.
 apply (H f); intros.
-elim (H0 x H1); intros; auto with v62.
-absurd (V v = f v :>quasiterm); auto with v62; elim H2; auto with v62.
-left; exists v; auto with v62.
+elim (H0 x H1); intros; auto with arith.
+absurd (V v = f v :>quasiterm); auto with arith; elim H2; auto with arith.
+left; exists v; auto with arith.
 Save ident_or_notS.
 
 (*****************************************************************)
@@ -1214,37 +1214,37 @@ apply
   with
     (list_var (ConsArg (Subst f t2) (Subst f t4)))
     (list_var (ConsArg (ConsArg t1 t2) (ConsArg t3 t4))); 
- auto with v62.
+ auto with arith.
 apply st_inclv_init with x.
 change (~ IS_IN_LV x (list_var (Subst f (ConsArg t2 t4)))) in |- *.
 unfold not in |- *; intros; cut (IS_IN x (Subst f (ConsArg t2 t4))); intros.
-2: apply IS_IN_LV_IS_IN; auto with v62.
+2: apply IS_IN_LV_IS_IN; auto with arith.
 elim (IS_IN_Subst_exi_IS_IN f (ConsArg t2 t4) x H7); intros.
 elim H8; intros.
-absurd (IS_IN x (f x0)); auto with v62; apply idempotent_dom_n_IS_IN;
- auto with v62.
+absurd (IS_IN x (f x0)); auto with arith; apply idempotent_dom_n_IS_IN;
+ auto with arith.
 apply IS_IN_IS_IN_LV; elim (IS_IN_decP x (ConsArg t1 t3)); intros.
 cut (IS_IN x (ConsArg t1 t3)).
-2: auto with v62.
-simpl in |- *; intros h; elim h; auto with v62.
-absurd (V x = f x :>quasiterm); auto with v62.
+2: auto with arith.
+simpl in |- *; intros h; elim h; auto with arith.
+absurd (V x = f x :>quasiterm); auto with arith.
 intros; cut (IS_IN y (Subst f (ConsArg t2 t4))).
-2: apply IS_IN_LV_IS_IN; auto with v62.
+2: apply IS_IN_LV_IS_IN; auto with arith.
 intros; apply IS_IN_IS_IN_LV;
  elim (IS_IN_Subst_exi_IS_IN f (ConsArg t2 t4) y H7); 
  intros.
 elim H8; intros.
 elim (dom_decP f x0); intros.
 cut (IS_IN y (ConsArg t1 t3)).
-2: apply (H2 y x0); auto with v62.
-simpl in |- *; intros h; elim h; auto with v62.
+2: apply (H2 y x0); auto with arith.
+simpl in |- *; intros h; elim h; auto with arith.
 cut (V x0 = f x0 :>quasiterm).
-2: apply n_dom; auto with v62.
+2: apply n_dom; auto with arith.
 intros; cut (y = x0 :>var).
 intros h; cut (IS_IN x0 (ConsArg t2 t4)).
-2: auto with v62.
-elim h; simpl in |- *; intros h1; elim h1; auto with v62.
-cut (IS_IN y (f x0)); auto with v62; elim H12; simpl in |- *; auto with v62.
+2: auto with arith.
+elim h; simpl in |- *; intros h1; elim h1; auto with arith.
+cut (IS_IN y (f x0)); auto with arith; elim H12; simpl in |- *; auto with arith.
 Save f_n_id_minus.
 
 (**********************************************************************)
@@ -1266,23 +1266,23 @@ intros. exists
   (fun m : nat => match m return quasiterm with
                   | O => t
                   | S p => f m
-                  end); split; auto with v62.
-simple induction p; auto with v62.
-intros; elimtype False; auto with v62.
+                  end); split; auto with arith.
+simple induction p; auto with arith.
+intros; elimtype False; auto with arith.
 intros.
 elim (H (fun x : nat => f (S x))); intros g0 h0; elim h0; intros.
 exists
  (fun m : nat => match m return quasiterm with
                  | O => f 0
                  | S p => g0 p
-                 end); split; auto with v62.
-simple induction p; auto with v62.
+                 end); split; auto with arith.
+simple induction p; auto with arith.
 Save sig_elem_subst0.
 
 Goal forall (x : var) (t : quasiterm), {f : quasisubst | elem_subst x t f}.
 intros; elim (sig_elem_subst0 t x V); intros.
-exists x0; elim p; intros; apply elem_subst_init; auto with v62.
-intros y0 h; elim h; auto with v62.
+exists x0; elim p; intros; apply elem_subst_init; auto with arith.
+intros y0 h; elim h; auto with arith.
 Save sig_elem_subst.
 
 Goal
@@ -1291,8 +1291,8 @@ forall (t : quasiterm) (x : var) (f : quasisubst),
 intros.
 replace (Subst f t) with (Subst V t); try apply V_stab.
 apply eq_restriction_s_t.
-intros; elim (var_eq_decP x x0); intros; auto with v62.
-absurd (IS_IN x0 t); auto with v62; elim H2; auto with v62.
+intros; elim (var_eq_decP x x0); intros; auto with arith.
+absurd (IS_IN x0 t); auto with arith; elim H2; auto with arith.
 Save elem_subst_conserve.
 
 (*****************************************************************)

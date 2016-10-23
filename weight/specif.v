@@ -19,7 +19,7 @@ Require Export Plus.
 
 (* le_plus_trans de la biblio std serait mieux appele le_plus_trans_left *)
 Theorem le_plus_trans_right : forall n m p : nat, n <= p -> n <= m + p.
-intros; elim plus_comm; auto with v62.
+intros; elim plus_comm; auto with arith.
 Qed.
 (* Hints Resolve le_plus_trans_right. *)
 
@@ -27,7 +27,7 @@ Qed.
 
 Theorem Leibniz_endo :
  forall (S : Set) (f : S -> S) (n m : S), n = m -> f n = f m.
-intros S f n m E; elim E; auto with v62.
+intros S f n m E; elim E; auto with arith.
 Qed.
 (* Hints Resolve Leibniz_endo. *)
 
@@ -49,12 +49,12 @@ Theorem other_Sf :
  forall (m n : nat) (t : tree),
  n = leaveplus t -> ~ m <= n -> ~ P_overweight m t.
 unfold not in |- *; intros m n t Heg Nle_mn Hdeb; elim Hdeb; elim Heg;
- auto with v62.
+ auto with arith.
 Qed.
 
 Theorem yet_another_Sf :
  forall (m : nat) (t : tree), ~ m <= leaveplus t -> ~ P_overweight m t.
-unfold not in |- *; intros m t Nle_mt Hdeb; elim Hdeb; auto with v62.
+unfold not in |- *; intros m t Nle_mt Hdeb; elim Hdeb; auto with arith.
 Qed.
 
 Hint Resolve yet_another_Sf.
@@ -82,7 +82,7 @@ Theorem deb_accu_plus_r :
  P_overweight_accu m a t -> P_overweight_accu m (a + b) t.
 unfold P_overweight_accu in |- *.
 intros m a b t Hlemt.
-apply le_trans with (a + leaveplus t); auto with v62.
+apply le_trans with (a + leaveplus t); auto with arith.
 Qed.
 Hint Resolve deb_accu_plus_r.
 
@@ -93,7 +93,7 @@ Theorem deb_left_accu_plus :
 unfold P_overweight_accu in |- *.
 intros m a t1 t2; simpl in |- *.
 pattern (leaveplus t1 + leaveplus t2) in |- *; elim plus_comm;
- elim plus_assoc_reverse; auto with v62.
+ elim plus_assoc_reverse; auto with arith.
 Qed.
 Theorem deb_right_accu_plus :
  forall (m a : nat) (t1 t2 : tree),
@@ -101,7 +101,7 @@ Theorem deb_right_accu_plus :
  P_overweight_accu m a (node t1 t2).
 unfold P_overweight_accu in |- *.
 intros m a t1 t2; elim plus_assoc; intro Hlemt2.
-simpl in |- *; auto with v62.
+simpl in |- *; auto with arith.
 Qed.
 
 (* Hints Resolve deb_left_accu_plus deb_right_accu_plus. *)
@@ -145,14 +145,14 @@ Hint Resolve pz_base pz_left pz_right.
 
 
 Theorem inv_pz_0 : forall n : nat, Pposs_zer (leaf n) -> 0 = n.
-intros n Hposs; inversion_clear Hposs; auto with v62.
+intros n Hposs; inversion_clear Hposs; auto with arith.
 Qed.
 (* Hints Resolve inv_pz_0. *)
 
 
 Theorem inv_pz_node :
  forall t1 t2 : tree, Pposs_zer (node t1 t2) -> Pposs_zer t1 \/ Pposs_zer t2.
-intros t1 t2 Hpz; inversion_clear Hpz; auto with v62.
+intros t1 t2 Hpz; inversion_clear Hpz; auto with arith.
 Qed.
 (* Hints Resolve inv_pz_node. *)
 
@@ -160,7 +160,7 @@ Theorem not_pz_node :
  forall t1 t2 : tree,
  ~ Pposs_zer t1 -> ~ Pposs_zer t2 -> ~ Pposs_zer (node t1 t2).
 intros t1 t2 Hnpz1 Hnpz2.
-unfold not in |- *; intro Hpz; inversion_clear Hpz; auto with v62.
+unfold not in |- *; intro Hpz; inversion_clear Hpz; auto with arith.
 Qed.
 
 (* Hints Resolve not_pz_node. *)
@@ -200,7 +200,7 @@ Theorem inv_poss_zerl :
  Pposs_zerl (const t lt) -> Pposs_zer t \/ Pposs_zerl lt.
 intros t lt Hpzl. 
 simple inversion Hpzl; unfold const in H0; injection H0; intros El Et;
- elim El; elim Et; auto with v62.
+ elim El; elim Et; auto with arith.
 Qed.
 (* Hints Resolve inv_poss_zerl. *)
 

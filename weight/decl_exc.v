@@ -26,7 +26,7 @@ Inductive Txval : Txlev -> Set :=
 
 Ltac AutoTx :=
   let l := fresh "l" in
-  intro l; elim l; simpl in |- *; intros v Hv; elim Hv; auto with v62.
+  intro l; elim l; simpl in |- *; intros v Hv; elim Hv; auto.
 
 Section inverse_of_xv2.
 
@@ -59,13 +59,13 @@ Theorem inv_xv2_xl2_bool_aux :
  l_xl2 l e v = xv2 (xl2_bool (l_xl2 l e v)).
 simple induction v.
   intros; absurd (xl1 = xl2); [ discriminate | assumption ].
-  auto with v62.
+  auto.
 Qed.
 
 Theorem inv_xv2_xl2_bool : forall v : Txval xl2, v = xv2 (xl2_bool v).
   intro v.
-  cut (xl2 = xl2); [ intro e | auto with v62 ].
-  cut (l_xl2 xl2 e v = v); [ intro e'; elim e' | auto with v62 ].
+  cut (xl2 = xl2); [ intro e | auto ].
+  cut (l_xl2 xl2 e v = v); [ intro e'; elim e' | auto ].
   apply inv_xv2_xl2_bool_aux.
 Qed.
 
