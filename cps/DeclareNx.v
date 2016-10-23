@@ -20,7 +20,7 @@
 
 Ltac NxUnit := apply Nx_unit.
 
-Ltac NxUnitRefine c := apply Nx_unit; refine c; auto with v62.
+Ltac NxUnitRefine c := apply Nx_unit; refine c; auto.
 
 Ltac NxRaise := apply Nx_raise.
 

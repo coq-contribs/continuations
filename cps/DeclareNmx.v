@@ -20,7 +20,7 @@
        (forall (l : Txlev) (x : Txval l), C l x -> C' l x) ->
        (C Vm+ A) -> C' Vm+ A' := Nmx_elim_Nmx_glob Txlev Txval X P.
 
-Ltac NmxUnitRefine c := apply Nmx_unit; refine c; auto with v62.
+Ltac NmxUnitRefine c := apply Nmx_unit; refine c; auto.
 
 Ltac NmxUnit := apply Nmx_unit.
 

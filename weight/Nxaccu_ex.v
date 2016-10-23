@@ -74,7 +74,7 @@ Theorem success : forall (m : nat) (t : tree), condsum_accu m 0 t -> RESU m t.
 intros m t Hsc.
 exists false.
 elim Hsc; simpl in |- *.
-intros n Hn; rewrite Hn; auto with v62.
+intros n Hn; rewrite Hn; auto.
 Qed.
 
 (* ==> [m:nat][t:tree][Hsc:condsum](exres m t false) *)

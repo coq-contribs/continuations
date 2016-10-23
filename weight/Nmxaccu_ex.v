@@ -56,11 +56,11 @@ cut (forall n : nat, prop_exc False (m <= n) Vm+ T_aux m n).
    unfold condsum2_accu_cps in |- *; elim t.
      intros n a.
      case (nul_dec n).
-       intro H0; NmxRaise xv1; simpl in |- *; elim H0; auto with v62.
+       intro H0; NmxRaise xv1; simpl in |- *; elim H0; auto.
        unfold not in |- *; intro Hn0; NmxElim (g (a + n));
         [ intro sn'; NmxUnit;
            refine (let (n', _, _) := sn' in condsum_accu_intro _ _ _ n' _ _);
-           auto with v62
+           auto
         | AutoTx ].
   
      Hint Resolve deb_left_accu_plus deb_right_accu_plus deb_accu_plus_r.
@@ -70,16 +70,16 @@ cut (forall n : nat, prop_exc False (m <= n) Vm+ T_aux m n).
      NmxElim (R2 an1);
       [ Split_condsum ipattern:an ipattern:Hant2 ipattern:Hmn
       | rewrite Han1t1; AutoTx ]. 
-     NmxUnit; refine (condsum_accu_intro _ _ _ an _ _); auto with v62.
+     NmxUnit; refine (condsum_accu_intro _ _ _ an _ _); auto.
      rewrite Hant2; rewrite Han1t1; rewrite plus_assoc_reverse; simpl in |- *;
-      auto with v62.
+      auto.
 
      (* definition de g *)
 
    intro n; case (le_dec m n).
      Hint Resolve noteq_xv2_true_false. 
-     intro Hlemn; NmxRaise (xv2 true); simpl in |- *; auto with v62.
-     intro Nlemn; NmxUnit; refine (exist2 _ _ n _ _); auto with v62.
+     intro Hlemn; NmxRaise (xv2 true); simpl in |- *; auto.
+     intro Nlemn; NmxUnit; refine (exist2 _ _ n _ _); auto.
 Qed.
 
 End algo1.
@@ -88,7 +88,7 @@ Theorem success2 :
  forall (m : nat) (t : tree), condsum_accu m 0 t -> RESU2 m t.
   intros m t ca; exists (some_b false).
   elim ca; simpl in |- *.
-  intros n Hn; rewrite Hn; auto with v62.
+  intros n Hn; rewrite Hn; auto.
 Qed.
 
 (* ==> [_:nat] ([_:tree] ([_:nat] (some_b false))) *)
@@ -99,15 +99,15 @@ Theorem exc_overweight_accu :
  prop_exc (Pposs_zer t) (P_overweight_accu m 0 t) l x -> RESU2 m t.
 
 intros m t l; case l. 
-  intros x1 Hexc1; exists exc_b; auto with v62.
+  intros x1 Hexc1; exists exc_b; auto.
 
   intros x2 Hexc2; exists (some_b (xl2_bool x2)).
   generalize Hexc2; clear Hexc2; rewrite (inv_xv2_xl2_bool x2).
   elim (xl2_bool x2); simpl in |- *; intro Hexc2; elim Hexc2; intros Ht Hf.
     cut (m <= 0 + leaveplus t);
-     [ auto with v62 | elim Ht; simpl in |- *; auto with v62 ].
+     [ auto | elim Ht; simpl in |- *; auto ].
 
-    elim Hf; auto with v62.
+    elim Hf; auto.
 Qed.
 
 (* ==> [_:nat]([_:tree]([l:Txlev]
@@ -171,9 +171,9 @@ Theorem catch_overweight :
  prop_excl (Pposs_zer t) Vm+ Tl_aux m t.
 
 intros m t l; case l; simpl in |- *; intros v Hv.
-   NmxRaise xv1; simpl in |- *; auto with v62.
+   NmxRaise xv1; simpl in |- *; auto.
 
-   NmxUnit; refine (exist _ (xl2_bool v) _); auto with v62.
+   NmxUnit; refine (exist _ (xl2_bool v) _); auto.
    unfold SPEC_resu_aux in |- *; elim Hv; intros Ht Hf; split.
       intro Hxt; apply Ht; elim Hxt; apply inv_xv2_xl2_bool.
       intro Hxf; elim Hf; elim Hxf; apply inv_xv2_xl2_bool.
@@ -189,7 +189,7 @@ Qed.
 Theorem core_list : forall (m : nat) (lt : ltree), lcond_cps m lt.
 do 2 intro; unfold lcond_cps in |- *.
 elim lt.
-  NmxUnit. refine (clc _ _ nilb _); auto with v62.
+  NmxUnit. refine (clc _ _ nilb _); auto.
 
   clear lt; intros t lt Rlt.
   cut (prop_excl (Pposs_zer t) Vm+ Tl_aux m t).
@@ -200,10 +200,10 @@ elim lt.
           refine
            (let (b, s) := aux_b in
             let (lb, s') := Rlb in clc _ _ (consb b lb) _); 
-          auto with v62
+          auto
        | AutoTx ].
          elim s; inversion s'; elim b; unfold P_overweight_accu in |- *;
-          auto with v62.
+          auto.
 
    (* Definition of g *)
 
@@ -215,12 +215,12 @@ elim lt.
       intros l x; intro h; exact h.
     
       intro s; elim s; simpl in |- *; intros n Hnt Hmn.
-      NmxUnit. refine (exist _ false _); auto with v62.
+      NmxUnit. refine (exist _ false _); auto.
       unfold SPEC_resu_aux in |- *; split.
          intro E; discriminate E.
  
          intro triv; unfold not in |- *; intro Hov.
-         apply Hmn; rewrite Hnt; elim Hov; auto with v62.
+         apply Hmn; rewrite Hnt; elim Hov; auto.
 Qed.      
 
 End algo2.
@@ -238,7 +238,7 @@ Qed.
 Theorem success_list :
  forall (m : nat) (lt : ltree), lcond m lt -> RESUL m lt.
 intros m lt lc; case lc; intros lb Hlb.
-exists (some_lb lb); auto with v62.
+exists (some_lb lb); auto.
 Qed.
 
 (* ==> [_:nat] ([_:ltree] ([lc:lbool](some_lb lc))) *)

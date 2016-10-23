@@ -26,8 +26,8 @@ intros m t.
 Ncallcc ipattern:c.
 Napply (condsum_accu m 0 t).
   intro s_cond; elim s_cond; intros n Hnt Hmn.
-  Nunit; refine (exres _ _ false _); auto with v62.
-  apply Sf; generalize Hmn; rewrite Hnt; auto with v62.
+  Nunit; refine (exres _ _ false _); auto.
+  apply Sf; generalize Hmn; rewrite Hnt; auto.
 
   cut (forall n : nat, (m <= n -> P_overweight_accu m 0 t) -> N (T_aux m n)).
     intro g.
