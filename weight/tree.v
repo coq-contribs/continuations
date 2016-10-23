@@ -32,7 +32,7 @@ Inductive Pext_morph : tree -> nat -> Prop :=
 Hint Resolve Pl Pn.
 
 Theorem Pem_em : forall t : tree, Pext_morph t (ext_morph t).
-simple induction t; simpl in |- *; auto with v62.
+simple induction t; simpl in |- *; auto.
 Qed.
 
 Theorem em_eq_Pem :
@@ -43,9 +43,9 @@ Qed.
 Theorem Pem_em_eq :
  forall (t : tree) (n : nat), Pext_morph t n -> n = ext_morph t.
 simple induction 1.
-   auto with v62.
+   auto.
    intros t1 t2 n1 n2 HPem1 Heq1 HPem2 Heq2.
-      rewrite Heq1; rewrite Heq2; auto with v62.
+      rewrite Heq1; rewrite Heq2; auto.
 Qed.
 
 

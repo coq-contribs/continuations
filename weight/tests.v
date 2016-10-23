@@ -15,20 +15,20 @@ Require Export Le.
 
 Theorem le_dec : forall m n : nat, {m <= n} + {~ m <= n}.
 simple induction m; clear m.
-  intro n; left; auto with v62.
+  intro n; left; auto with arith.
   intros m bm n; elim n; clear n.
-    right; auto with v62.
+    right; auto with arith.
     intros n bSmn; clear bSmn. 
     elim bm with n. 
-      intro le_mn; left; auto with v62.
-      intro Nle_mn; right; unfold not in |- *; auto with v62.
+      intro le_mn; left; auto with arith.
+      intro Nle_mn; right; unfold not in |- *; auto with arith.
 Qed.
 
 
 (* Test to zero *)
 
 Theorem nul_dec : forall n : nat, {0 = n :>nat} + {0 <> n :>nat}.
-simple destruct n; auto with v62.
+simple destruct n; auto with arith.
 Qed.
 
 (* =========================== *)

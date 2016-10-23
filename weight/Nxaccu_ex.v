@@ -39,34 +39,34 @@ cut (forall n : nat, m <= n \/+ T_aux m n).
     [ intro comprec; apply comprec | idtac ].
    unfold condsum_accu_cps in |- *; elim t.
      intros n a.
-     NxElim (g (a + n)); [ intro sn' | auto with v62 ].
+     NxElim (g (a + n)); [ intro sn' | auto ].
      NxUnit;
       refine (let (n', _, _) := sn' in condsum_accu_intro _ _ _ n' _ _);
-      auto with v62.
+      auto.
      Hint Resolve deb_left_accu_plus deb_right_accu_plus deb_accu_plus_r.
      intros t1 R1 t2 R2 a.
      NxElim (R1 a);
       [ Split_condsum ipattern:(an1) ipattern:(Han1t1) ipattern:(Hman1)
-      | auto with v62 ].
+      | auto ].
      NxElim (R2 an1);
       [ Split_condsum ipattern:(an) ipattern:(Hant2) ipattern:(Hmn)
-      | rewrite Han1t1; auto with v62 ].
-     NxUnit; refine (condsum_accu_intro _ _ _ an _ _); auto with v62.
+      | rewrite Han1t1; auto ].
+     NxUnit; refine (condsum_accu_intro _ _ _ an _ _); auto.
      rewrite Hant2; rewrite Han1t1; rewrite plus_assoc_reverse; simpl in |- *;
-      auto with v62.
+      auto.
 
      (* definition of g *)
 
    intro n; case (le_dec m n).
      intro Hlemn; NxRaise; assumption.
-     intro Nlemn; NxUnit; refine (exist2 _ _ n _ _); auto with v62.
+     intro Nlemn; NxUnit; refine (exist2 _ _ n _ _); auto.
 Qed.
 
 End algorithms.
 
 Theorem exc_overweight_accu :
  forall (m : nat) (t : tree), P_overweight_accu m 0 t -> RESU m t.
-intros; exists true; auto with v62.
+intros; exists true; auto.
 Qed.
 
 
@@ -74,7 +74,7 @@ Theorem success : forall (m : nat) (t : tree), condsum_accu m 0 t -> RESU m t.
 intros m t Hsc.
 exists false.
 elim Hsc; simpl in |- *.
-intros n Hn; rewrite Hn; auto with v62.
+intros n Hn; rewrite Hn; auto.
 Qed.
 
 (* ==> [m:nat][t:tree][Hsc:condsum](exres m t false) *)
