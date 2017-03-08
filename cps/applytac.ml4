@@ -11,6 +11,7 @@ open Proof_type
 open Clenv
 open Clenvtac
 open Tacmach
+open Ltac_plugin
 
 DECLARE PLUGIN "cps/applytac"
 
