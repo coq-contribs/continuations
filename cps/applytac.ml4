@@ -7,6 +7,7 @@
 
 open CErrors
 open Term
+open EConstr
 open Proof_type
 open Clenv
 open Clenvtac
@@ -15,21 +16,21 @@ open Ltac_plugin
 
 DECLARE PLUGIN "cps/applytac"
 
-let last_constr c = snd (decompose_prod c)
+let last_constr (sigma,c) = snd (decompose_prod sigma c)
 
-let first_arg =
+let first_arg sigma =
    let st = "arg of first_arg should be an application"
-   in function c -> match kind_of_term c with
+   in function c -> match kind sigma c with
      App (_, v) -> if Array.length v = 1 then Array.get v 0
                           else error (st^" with exactly one argument")
    | c -> error st
 
-let nb_hyps c = List.length (fst (decompose_prod c))
+let nb_hyps sigma c = List.length (fst (decompose_prod sigma c))
 
 (* pour un Apply f with typeres_of c *)
 let resolve_with_tac chd mlist gls =
-  let ty = pf_unsafe_type_of gls chd in
-  let clause = pf_apply make_clenv_binding_apply gls (Some (nb_hyps ty)) (chd, ty)
+  let sigma, ty = pf_type_of gls chd in
+  let clause = pf_apply make_clenv_binding_apply gls (Some (nb_hyps sigma ty)) (chd, ty)
     (Misctypes.ImplicitBindings mlist) in
   Proofview.V82.of_tactic (res_pf clause) gls
 
@@ -38,7 +39,7 @@ let resolve_with_compon translate cpn f c gls =
    let mlist = [cpn gls (translate gls c)]
    in resolve_with_tac (translate gls f) mlist gls
 
-let fst_arg_of_restype gls c = first_arg(last_constr (pf_unsafe_type_of gls c))
+let fst_arg_of_restype gls c = first_arg (project gls) (last_constr (pf_type_of gls c))
 
 (* FATR = first argument of type of result of *)
 
