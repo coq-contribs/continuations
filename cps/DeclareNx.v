@@ -8,7 +8,7 @@
      Variable P : Prop.
      Variable e : P -> X.
      Let Nx := Nxglob X P.
-     Notation Local "c \/+ s" := (Nx c s)
+     Local Notation "c \/+ s" := (Nx c s)
        (at level 85, right associativity, format "c  \/+  '/  ' s").
      Let Nx_handle := Nx_handle_glob X P.
      Let Nx_unit := Nx_unit_glob X P.

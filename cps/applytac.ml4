@@ -8,11 +8,11 @@
 open CErrors
 open Term
 open EConstr
-open Proof_type
 open Clenv
 open Clenvtac
 open Tacmach
 open Ltac_plugin
+open Stdarg
 
 DECLARE PLUGIN "cps/applytac"
 
@@ -22,8 +22,8 @@ let first_arg sigma =
    let st = "arg of first_arg should be an application"
    in function c -> match kind sigma c with
      App (_, v) -> if Array.length v = 1 then Array.get v 0
-                          else error (st^" with exactly one argument")
-   | c -> error st
+                          else user_err (Pp.str (st^" with exactly one argument"))
+   | c -> user_err (Pp.str st)
 
 let nb_hyps sigma c = List.length (fst (decompose_prod sigma c))
 
