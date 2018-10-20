@@ -20,6 +20,7 @@ Fixpoint def_cop (T : tree1) : tree1 :=
   end.
 
 Require Import Mx_defs.
+Require Extraction.
 
 (* (Mx P A) computes an inhabitant of A but may raise an exception if P *)
 Theorem core_cop :

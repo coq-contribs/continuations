@@ -27,6 +27,7 @@
 *)
 
 Require Import List.
+Require Extraction.
 
 Section sec_dom.
 Variable dom : Set.
