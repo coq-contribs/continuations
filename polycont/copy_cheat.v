@@ -27,7 +27,7 @@ Theorem core_cop :
  forall t : tree1,
  Mx (t = def_cop t) {t' : tree1 | t' = def_cop t &  t <> t'}.
 
-fix 1.
+fix core_cop 1.
 intro t; case t; clear t.
   simpl in |- *; intros n. apply Mx_raise. trivial.
 

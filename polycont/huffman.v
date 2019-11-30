@@ -69,7 +69,7 @@ Qed.
 Require Import Mx_defs.
 
 Theorem lookup : forall t : tree, Mx (elsewhere t) {l : ld | path l t}.
-fix 1.
+fix lookup 1.
 intro t; case t; clear t.
   apply Mx_raise. simpl in |- *; trivial.
   intros t1 b t2; case (eg a b).
