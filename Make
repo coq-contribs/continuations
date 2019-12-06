@@ -2,7 +2,7 @@
 -I cps
 -R . Continuations
 
-./cps/applytac.ml4
+./cps/applytac.mlg
 
 ./cps/cps_Nmx.v
 ./cps/cps_N.v
